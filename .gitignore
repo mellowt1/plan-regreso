@@ -1,0 +1,4 @@
+content/plan.json
+node_modules/
+.playwright/
+*.png.tmp
