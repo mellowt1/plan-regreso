@@ -1,5 +1,5 @@
 // Offline cache. Only the app's own files are fetched.
-const CACHE = 'plan-regreso-v4';
+const CACHE = 'plan-regreso-v5';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './data.json', './admin.html', './admin.webmanifest'];
 
 self.addEventListener('install', (e) => {

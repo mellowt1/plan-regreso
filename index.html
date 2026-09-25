@@ -104,98 +104,72 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 .hello .sub { color: var(--muted); font-size: 17px; }
 @media (min-width: 860px) { .hello h1 { max-width: none; } .hello .sub { font-size: 18px; } }
 
-/* Goals */
-.goals { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.goals li { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: var(--surface); font-weight: 700; line-height: 1.3; }
+/* Overview */
+.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 859px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
+.panel { background: var(--surface); border-radius: 16px; padding: 20px 22px; min-width: 0; }
+@media (max-width: 859px) { .panel { padding: 16px 16px 18px; } }
+.panel > .label { color: var(--muted); display: block; margin-bottom: 8px; }
+.next { position: relative; border-left: 6px solid var(--ball); display: flex; flex-direction: column; gap: 12px; }
+.next > .label { color: var(--ball-ink); margin-bottom: 0; }
+.next .step { font-family: var(--display); font-weight: 600; font-size: clamp(23px, 2.6vw, 30px); line-height: 1.2; }
+.next .btn-ball { align-self: flex-start; }
+.next .tag { margin-top: -4px; }
+@media (max-width: 859px) { .next .btn-ball { align-self: stretch; min-height: 56px; } }
+.goals { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.goals li { display: flex; align-items: center; gap: 12px; font-weight: 700; line-height: 1.3; }
 .goals .n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--table); color: #fff; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 15px; }
-@media (max-width: 859px) { .goals { grid-template-columns: minmax(0, 1fr); gap: 8px; margin-bottom: 16px; } .goals li { padding: 10px 14px; } }
 
-/* The table */
-.table {
-  display: grid; grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr); grid-template-areas: "dad net paul";
-  background: var(--table); border: 6px solid var(--rim); border-radius: 12px; box-shadow: var(--shadow);
-}
-.side { position: relative; padding: 26px 30px 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.side::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid rgba(255,255,255,.45); pointer-events: none; }
-.side > * { position: relative; }
-.side.dad { grid-area: dad; }
-.side.paul { grid-area: paul; }
-.side .who { color: var(--table-ink); }
-.side.paul .who { text-align: right; }
-.net { grid-area: net; background: repeating-linear-gradient(0deg, rgba(255,255,255,.9) 0 3px, rgba(255,255,255,.25) 3px 9px); box-shadow: 0 0 0 2px var(--rim); }
+.jump { position: sticky; top: 0; z-index: 4; margin: 20px -16px 0; padding: 10px 16px; background: var(--bg); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid transparent; }
+.jump::-webkit-scrollbar { display: none; }
+.jump.stuck { border-bottom-color: var(--line); }
+.jump a { flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--chip); display: inline-flex; align-items: center; font-weight: 700; font-size: 15px; text-decoration: none; }
+.jump a:hover { background: var(--line); }
+@media (min-width: 860px) { .jump { margin: 24px -40px 0; padding: 12px 40px; } }
 
-.card { background: var(--card-soft); color: var(--card-ink); border-radius: 10px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.35; }
-.card.shot { background: var(--card); padding: 22px 22px 20px; gap: 12px; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
-.card.shot .ball { position: absolute; right: -14px; top: -18px; }
-.card.shot .label { color: var(--ball-ink); }
-.card.shot .step { font-family: var(--display); font-weight: 600; font-size: clamp(23px, 2.4vw, 27px); line-height: 1.2; }
-.card.shot .btn-ball { align-self: flex-start; }
-.card .then { color: var(--muted); }
-.card.now { flex-direction: row; align-items: center; gap: 14px; background: var(--card); }
-.card.now .avatar { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 18px; }
-.card.now .label { color: var(--done); }
-.card.now b { font-size: 18px; line-height: 1.3; }
-.card.now .ball { position: absolute; right: -14px; top: -18px; }
-.waits { border: 2px dashed rgba(255,255,255,.7); border-radius: 10px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF; font-size: 17px; line-height: 1.35; }
-.waits .label { color: var(--peach); }
-.donerow { display: flex; align-items: center; gap: 10px; color: var(--table-ink); font-size: 16px; }
-.donerow .tick { flex: none; width: 22px; height: 22px; border-radius: 6px; background: var(--table-ink); color: var(--table); display: grid; place-items: center; }
-.donerow .tick svg { width: 14px; height: 14px; }
-.donerow s { text-decoration-thickness: 1px; }
-.more-mine { align-self: flex-start; min-height: 44px; display: flex; align-items: center; background: none; border: 0; padding: 0; color: #FFFFFF; font-weight: 700; font-size: 16px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-.gap-top { margin-top: 12px; }
+.sec { margin-top: 32px; scroll-margin-top: 70px; }
+.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.sec-h h2 { font-family: var(--display); font-weight: 800; font-size: 28px; letter-spacing: -.015em; line-height: 1.1; }
+.sec-h .small { color: var(--muted); font-size: 15px; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.cols3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 859px) { .cols, .cols3 { grid-template-columns: minmax(0, 1fr); gap: 12px; } .sec { margin-top: 28px; } .sec-h h2 { font-size: 24px; } }
 
-@media (max-width: 859px) {
-  .table { grid-template-columns: minmax(0, 1fr); grid-template-areas: "paul" "net" "dad"; border-width: 5px; }
-  .side { padding: 18px 16px 20px; gap: 10px; }
-  .side.dad { padding-top: 26px; }
-  .side::before { display: none; }
-  .side.paul .who { text-align: left; }
-  .net { height: 16px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.9) 0 3px, rgba(255,255,255,.25) 3px 9px); }
-  .card.shot { padding: 20px 18px 18px; }
-  .card.shot .btn-ball { align-self: stretch; min-height: 56px; font-size: 18px; }
-  .card.shot .ball, .card.now .ball { right: -8px; width: 36px; height: 36px; }
-  .gap-top { margin-top: 0; }
-}
+.who-h { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.who-h .av { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 17px; background: var(--ink); color: var(--bg); }
+.who-h.dad .av { background: var(--ball); color: #16211C; }
+.who-h h3 { font-family: var(--display); font-weight: 800; font-size: 21px; margin: 0; }
+.who-h .cnt { margin-left: auto; font-size: 15px; color: var(--muted); font-weight: 700; }
+.panel .bar { margin: 4px 0 6px; }
+.bar.green i { background: var(--done); }
+.tag.live { background: color-mix(in srgb, var(--done) 18%, transparent); color: var(--done); }
+.tag.next-t { background: var(--peach); color: #6B3300; }
 
-/* Score and facts */
-.facts { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
-.score { display: flex; align-items: center; gap: 14px; padding: 14px 22px; border-radius: 12px; background: var(--score); color: var(--score-ink); }
-.score .label { color: var(--score-muted); }
-.score .col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.score .col span { font-size: 12px; font-weight: 700; color: var(--score-muted); }
-.flip {
-  width: 56px; height: 64px; border-radius: 8px; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 44px; line-height: 1;
-  background: linear-gradient(transparent 49%, var(--score) 49%, var(--score) 51%, transparent 51%), var(--score-tile);
-}
-.score .colon { font-family: var(--display); font-size: 32px; color: var(--score-muted); }
-.score .note { font-size: 14px; color: var(--score-muted); max-width: 110px; line-height: 1.3; }
-.fact { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 14px 20px; border-radius: 12px; background: var(--surface); }
-.fact .label { color: var(--muted); }
-.fact b { font-size: 17px; line-height: 1.3; }
-.fact .big { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; }
-.fact .small { font-size: 14px; color: var(--muted); }
-.bar { height: 10px; border-radius: 5px; background: var(--chip); overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--ball); border-radius: 5px; }
-@media (max-width: 859px) {
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
-  .score { grid-column: span 2; justify-content: space-between; padding: 16px 18px; }
-  .score .note { display: none; }
-  .fact.goal { grid-column: span 2; }
-  .flip { width: 52px; height: 60px; font-size: 40px; }
-}
+.fundrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px 16px; margin-bottom: 16px; }
+.fundrow .big { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; }
+.fundrow .of { color: var(--muted); font-size: 16px; }
+.fundrow .bar { grid-column: 1 / -1; height: 12px; margin: 6px 0 0; }
+.fundrow .note { grid-column: 1 / -1; color: var(--muted); font-size: 15px; }
+.panel h3.card-h { font-family: var(--display); font-weight: 800; font-size: 18px; margin: 0 0 4px; line-height: 1.25; }
+.panel .money { margin-top: 4px; font-size: 16px; }
+.panel .money td { padding: 7px 0; }
+.bigtotal { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1.1; margin: 2px 0 8px; }
 
-/* Links */
-nav.more { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-nav.more button {
-  min-height: 48px; padding: 0 20px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface);
-  font-weight: 700; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-}
-nav.more button:hover { border-color: var(--ink); }
-@media (max-width: 859px) {
-  nav.more { flex-direction: column; gap: 0; margin-top: 12px; }
-  nav.more button { justify-content: space-between; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none; padding: 0 2px; min-height: 54px; font-size: 17px; }
-}
+.debts { list-style: none; margin: 4px 0 0; padding: 0; }
+.debts li { padding: 10px 0; border-top: 1px solid var(--line); font-weight: 700; }
+.debts li:first-child { border-top: 0; }
+.logs { list-style: none; margin: 0; padding: 0; }
+.logs li { padding: 12px 0; border-top: 1px solid var(--line); }
+.logs li:first-child { border-top: 0; padding-top: 4px; }
+.logs .d { font-weight: 700; color: var(--ball-ink); font-size: 14px; }
+.logs-foot { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+details.more { margin-top: 32px; border-top: 1px solid var(--line); }
+details.more summary { list-style: none; cursor: pointer; min-height: 56px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 17px; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary::after { content: "+"; font-size: 24px; color: var(--muted); }
+details.more[open] summary::after { content: "−"; }
+details.more .row { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 8px; }
 
 /* Push nudge */
 .nudge { margin-top: 24px; display: flex; align-items: center; gap: 18px; padding: 18px 22px; border-radius: 12px; background: var(--surface); border: 2px dashed var(--line); }
@@ -319,35 +293,60 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       <p class="sub" id="subline"></p>
     </section>
 
-    <ol class="goals" id="goals" aria-label="Objetivos"></ol>
-
-    <section class="table" aria-labelledby="headline">
-      <div class="side dad" id="dadSide"></div>
-      <div class="net" aria-hidden="true"></div>
-      <div class="side paul" id="paulSide"></div>
+    <section class="hero">
+      <div class="panel next" id="nextCard"></div>
+      <div class="panel"><span class="label" data-t="goals">Objetivos</span><ol class="goals" id="goals"></ol></div>
     </section>
 
-    <div class="acts-row" id="dadActs" hidden>
-      <button class="btn-line" type="button" data-sheet="write" id="writeBtn"></button>
-      <button class="btn-line" type="button" data-sheet="tasks" id="tickBtn"></button>
-    </div>
+    <nav class="jump" id="jump" aria-label="Secciones">
+      <a href="#s-tasks" data-t="secTasks">Tareas</a>
+      <a href="#s-money" data-t="secMoney">Dinero</a>
+      <a href="#s-credit" data-t="secCredit">Crédito y deudas</a>
+      <a href="#s-notes" data-t="secNotes">Notas</a>
+      <a href="#s-log" data-t="secLog">Novedades</a>
+    </nav>
 
-    <section class="facts">
-      <div class="score" id="score"></div>
-      <div class="fact goal" id="factGoal"></div>
-      <div class="fact" id="factFund"></div>
-      <div class="fact" id="factDays"></div>
+    <section class="sec" id="s-tasks">
+      <div class="sec-h"><h2 data-t="secTasks">Tareas</h2><span class="small" id="tasksHint"></span></div>
+      <div class="cols">
+        <div class="panel" id="dadTasks"></div>
+        <div class="panel" id="paulTasks"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-money">
+      <div class="sec-h"><h2 data-t="secMoney">Dinero</h2><span class="small" data-t="budgetNote"></span></div>
+      <div class="panel" id="fund" style="margin-bottom: 16px"></div>
+      <div class="cols3" id="budget"></div>
+    </section>
+
+    <section class="sec" id="s-credit">
+      <div class="sec-h"><h2 data-t="secCredit">Crédito y deudas</h2></div>
+      <div class="cols">
+        <div class="panel" id="credit"></div>
+        <div class="panel" id="debts"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-notes">
+      <div class="sec-h"><h2 data-t="dadNotes">Notas de papá</h2></div>
+      <div id="notes"></div>
+    </section>
+
+    <section class="sec" id="s-log">
+      <div class="sec-h"><h2 data-t="secLog">Novedades</h2></div>
+      <div class="panel" id="log"></div>
     </section>
 
     <section class="nudge" id="nudge" hidden></section>
 
-    <nav class="more" aria-label="Más">
-      <button type="button" data-sheet="tasks"><span data-t="lTasks">Todas las tareas</span><span aria-hidden="true">→</span></button>
-      <button type="button" data-sheet="plan"><span data-t="lPlan">El plan completo</span><span aria-hidden="true">→</span></button>
-      <button type="button" data-sheet="money"><span data-t="lMoney">Dinero y crédito</span><span aria-hidden="true">→</span></button>
-      <button type="button" data-sheet="log"><span data-t="lLog">Lo que ha pasado</span><span aria-hidden="true">→</span></button>
-      <button type="button" data-sheet="more"><span data-t="lMore">Servicios y reglas</span><span aria-hidden="true">→</span></button>
-    </nav>
+    <details class="more">
+      <summary data-t="moreT">Más del plan</summary>
+      <div class="row">
+        <button class="btn-line" type="button" data-sheet="plan" data-t="lPlan">El plan completo</button>
+        <button class="btn-line" type="button" data-sheet="more" data-t="lMore">Servicios y reglas</button>
+      </div>
+    </details>
 
     <footer>
       <span class="sig" data-t="sig">Hecho por Paul para papá</span>
@@ -415,6 +414,11 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       saveFail: 'No se pudo guardar. Revisa la conexión y prueba otra vez.',
       logDone: (t) => 'Terminé: ' + t, logUndo: (t) => 'Volví a abrir: ' + t, logAdd: (t) => 'Nueva tarea: ' + t,
       byDad: 'Papá',
+      hi: 'Hola papá', subOv: (date, days, dl) => `${date} · faltan ${days} días, hasta el ${dl}`,
+      nextStep: 'Tu próximo paso', allDone: 'Todo hecho. Descansa, o agrega una tarea abajo.',
+      secTasks: 'Tareas', secMoney: 'Dinero', secCredit: 'Crédito y deudas', secNotes: 'Notas', secLog: 'Novedades',
+      tapBox: 'Toca un cuadro para marcarlo. Paul recibe un aviso.', paulWaitsYou: 'Espera tu parte', upNext: 'Lo siguiente',
+      fundT: 'Fondo del pasaje', seeAll: 'Ver todo', noNotes: 'Todavía no hay notas.', moreT: 'Más del plan',
       nudgeT: '¿Te aviso cuando te toque?', nudgeP: 'Un aviso en tu teléfono cuando Paul te devuelva la pelota.',
       nudgeBtn: 'Sí, avísame', nudgeLater: 'Ahora no',
       nudgeIos: 'En iPhone: toca Compartir y después “Añadir a pantalla de inicio”. Abre el plan desde ese ícono y aquí podrás activar los avisos.',
@@ -451,6 +455,11 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       saveFail: 'Could not save. Check the connection and try again.',
       logDone: (t) => 'Done: ' + t, logUndo: (t) => 'Reopened: ' + t, logAdd: (t) => 'New task: ' + t,
       byDad: 'Dad',
+      hi: 'Hi Dad', subOv: (date, days, dl) => `${date} · ${days} days to go, until ${dl}`,
+      nextStep: 'Your next step', allDone: 'All done. Rest, or add a task below.',
+      secTasks: 'Tasks', secMoney: 'Money', secCredit: 'Credit and debts', secNotes: 'Notes', secLog: 'Updates',
+      tapBox: 'Tap a box to tick it. Paul gets a notification.', paulWaitsYou: 'Waiting on you', upNext: 'Up next',
+      fundT: 'Ticket fund', seeAll: 'See all', noNotes: 'No notes yet.', moreT: 'More of the plan',
       nudgeT: 'Want a nudge when it is your turn?', nudgeP: 'A notification on your phone when Paul sends the ball back.',
       nudgeBtn: 'Yes, notify me', nudgeLater: 'Not now',
       nudgeIos: 'On iPhone: tap Share, then “Add to Home Screen”. Open the plan from that icon and you can turn on notifications here.',
@@ -554,109 +563,115 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   const nextOf = (list) => list.find((x) => x.status === 'doing') || list.find((x) => x.status === 'todo');
 
   // ---------- render ----------
+  // One page, in the order of the sheet: goals, both task columns, money,
+  // credit and debts, Dad's notes, updates.
+  const doneFirstLast = (list) => [...list.filter((x) => x.status !== 'done'), ...list.filter((x) => x.status === 'done')];
+
+  function checklist(list, kind, editable, next) {
+    return el('ul', { class: 'list' }, doneFirstLast(list).map((x) => {
+      const done = x.status === 'done';
+      return el('li', { class: x.status + (x === next ? ' next' : '') },
+        editable
+          ? el('button', { class: 'box', type: 'button', role: 'checkbox', 'aria-checked': String(done), 'aria-label': tr(x.text), [done ? 'data-undo' : 'data-done']: taskKey(x), 'data-kind': kind }, done ? check() : null)
+          : el('span', { class: 'box', 'aria-hidden': 'true' }, done ? check() : null),
+        el('div', null,
+          el('div', { class: 't' }, tr(x.text)),
+          x === next && kind === 'task' ? el('span', { class: 'tag next-t' }, S('nextStep')) : null,
+          x.status === 'doing' ? el('span', { class: 'tag live' }, tr(x.note) || S('paulNow')) : null,
+          x.status === 'blocked' ? el('span', { class: 'tag' }, tr(x.note) || S('paulWaitsYou')) : null,
+          x.paulWaits && !done ? el('span', { class: 'tag' }, S('paulWaits')) : null,
+        ));
+    }));
+  }
+
+  function whoHead(cls, initial, name, list) {
+    const n = list.filter((x) => x.status === 'done').length;
+    const bar = el('div', { class: 'bar green', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': list.length, 'aria-valuenow': n, 'aria-label': name }, el('i'));
+    bar.firstChild.style.width = (list.length ? (n / list.length) * 100 : 0) + '%';
+    return [el('div', { class: 'who-h ' + cls }, el('span', { class: 'av', 'aria-hidden': 'true' }, initial), el('h3', null, name), el('span', { class: 'cnt' }, S('doneOf')(n, list.length))), bar];
+  }
+
+  const longDay = (s) => cap(fmtDay(s, { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
+
   function render(d) {
     const t = today();
-    const ph = currentPhase(d.phases, t);
     const mine = d.tasks.eduardo, pauls = d.tasks.paul;
     const next = nextOf(mine);
+    const edit = canEdit();
 
     const upd = S('updated')(fmtDay(d.updated));
     $('updatedTop').textContent = upd;
     $('updatedFoot').textContent = upd;
+    $('headline').textContent = S('hi');
+    const todayTxt = cap(t.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
+    $('subline').textContent = S('subOv')(todayTxt, daysUntil(d.deadline, t), fmtDay(d.deadline, { day: 'numeric', month: 'long' }));
 
-    $('headline').textContent = next ? S('headMine') : S('headPaul');
-    const today_ = cap(t.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
-    $('subline').textContent = S('sub')(today_, ph.n, d.phases.length, tr(ph.title), daysUntil(d.deadline, t));
+    // Next step
+    const wa = next && d.contact && d.contact.whatsapp
+      ? 'https://wa.me/' + d.contact.whatsapp + '?text=' + encodeURIComponent(S('wa')(tr(next.text))) : null;
+    $('nextCard').replaceChildren(...(next ? [
+      el('span', { class: 'label' }, S('nextStep')),
+      el('p', { class: 'step' }, tr(next.text)),
+      next.paulWaits ? el('span', { class: 'tag' }, S('paulWaits')) : null,
+      edit ? el('button', { class: 'btn-ball', type: 'button', 'data-done': taskKey(next), 'data-kind': 'task' }, check(), S('markDone'))
+        : wa ? el('a', { class: 'btn-ball', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('tellPaul')) : null,
+      edit && wa ? el('a', { class: 'wa-link', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('waPaul')) : null,
+    ] : [el('span', { class: 'label' }, S('nextStep')), el('p', { class: 'step' }, S('allDone'))]).filter(Boolean));
 
     const goals = d.objectives || [];
-    $('goals').hidden = !goals.length;
-    $('goals').setAttribute('aria-label', S('goals'));
     $('goals').replaceChildren(...goals.map((g, i) => el('li', null, el('span', { class: 'n', 'aria-hidden': 'true' }, i + 1), tr(g))));
 
-    // Dad's side: the ball sits on his next task
-    const dad = [el('span', { class: 'label who' }, S('dad'))];
-    if (next) {
-      const wa = d.contact && d.contact.whatsapp
-        ? 'https://wa.me/' + d.contact.whatsapp + '?text=' + encodeURIComponent(S('wa')(tr(next.text)))
-        : null;
-      dad.push(el('div', { class: 'card shot' },
-        ball(),
-        el('span', { class: 'label' }, S('shot')),
-        el('p', { class: 'step' }, tr(next.text)),
-        canEdit()
-          ? [el('button', { class: 'btn-ball', type: 'button', 'data-done': taskKey(next) }, check(), S('markDone')),
-             wa ? el('a', { class: 'wa-link', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('waPaul')) : null]
-          : wa ? el('a', { class: 'btn-ball', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('tellPaul')) : null,
-      ));
-      const rest = open(mine).filter((x) => x !== next);
-      const shown = [...rest.filter((x) => x.paulWaits), ...rest.filter((x) => !x.paulWaits)].slice(0, 2);
-      shown.forEach((x, i) => dad.push(el('div', { class: 'card' + (i === 0 ? ' gap-top' : '') },
-        el('span', null, tr(x.text)),
-        x.paulWaits ? el('span', { class: 'tag' }, S('paulWaits')) : null,
-      )));
-      const more = rest.length - shown.length;
-      if (more > 0) dad.push(el('button', { class: 'more-mine', type: 'button', 'data-sheet': 'tasks' }, S('more')(more)));
-    } else {
-      dad.push(el('div', { class: 'card shot' }, el('p', { class: 'step' }, S('nothing'))));
-    }
-    $('dadSide').replaceChildren(...dad);
-    $('dadActs').hidden = !canEdit();
-    $('writeBtn').replaceChildren(pencil(), S('writeBtn'));
-    $('tickBtn').replaceChildren(check(), S('tickBtn'));
-
-    // Paul's side: what he is on, what comes after, what waits on Dad
-    const pNow = nextOf(pauls);
-    const pRest = pauls.filter((x) => x.status === 'todo' && x !== pNow);
-    const blocked = pauls.filter((x) => x.status === 'blocked');
-    const lastDone = [...pauls].reverse().find((x) => x.status === 'done');
-    const paul = [el('span', { class: 'label who' }, S('paul'))];
-    if (pNow) {
-      const live = pNow.status === 'doing';
-      paul.push(el('div', { class: 'card now' },
-        next ? null : ball(),
-        el('span', { class: 'avatar', 'aria-hidden': 'true' }, 'P'),
-        el('div', null,
-          el('span', { class: 'label' }, live ? S('paulNow') : S('paulNext'), live ? el('span', { class: 'dots', 'aria-hidden': 'true' }, ' ', el('i', null, '●'), el('i', null, '●'), el('i', null, '●')) : null),
-          el('b', { style: 'display:block' }, tr(pNow.text)),
-        ),
-      ));
-    }
-    if (pRest[0]) paul.push(el('div', { class: 'card' }, el('span', null, el('span', { class: 'then' }, S('then') + ' '), tr(pRest[0].text))));
-    if (blocked.length) paul.push(el('div', { class: 'waits gap-top' },
-      el('span', { class: 'label' }, S('waitsBall')),
-      blocked.map((x) => el('span', null, tr(x.text))),
-    ));
-    if (lastDone) paul.push(el('div', { class: 'donerow' }, el('span', { class: 'tick' }, check()), el('s', null, tr(lastDone.text))));
-    $('paulSide').replaceChildren(...paul);
-
-    // Score and facts
-    const dn = (l) => l.filter((x) => x.status === 'done').length;
-    $('score').replaceChildren(
-      el('span', { class: 'label' }, S('score')),
-      el('div', { class: 'col' }, el('span', null, S('dadShort').toUpperCase()), el('div', { class: 'flip' }, dn(mine))),
-      el('span', { class: 'colon', 'aria-hidden': 'true' }, ':'),
-      el('div', { class: 'col' }, el('span', null, 'PAUL'), el('div', { class: 'flip' }, dn(pauls))),
-      el('span', { class: 'note' }, S('scoreNote')),
+    // Tasks, side by side like the sheet
+    $('tasksHint').textContent = edit ? S('tapBox') : '';
+    $('dadTasks').replaceChildren(
+      ...whoHead('dad', 'E', S('dadShort'), mine),
+      checklist(mine, 'task', edit, next),
+      edit ? el('form', { class: 'addrow', id: 'addForm' },
+        el('input', { id: 'addText', type: 'text', placeholder: S('addPh'), 'aria-label': S('addPh'), maxlength: 200, enterkeyhint: 'done' }),
+        el('button', { type: 'submit' }, S('add'))) : null,
     );
-    $('score').setAttribute('aria-label', `${S('score')}: ${S('dadShort')} ${dn(mine)}, Paul ${dn(pauls)}`);
+    $('paulTasks').replaceChildren(...whoHead('paul', 'P', 'Paul', pauls), checklist(pauls, 'paul', false, null));
 
-    $('factGoal').replaceChildren(
-      el('span', { class: 'label' }, S('goalNow') + ' · ' + S('daysLeft')(daysUntil(ph.to, t))),
-      el('b', null, tr(d.goalNow)),
-    );
+    // Money
     const f = d.fund;
     const pct = f.target ? Math.min(100, (f.saved / f.target) * 100) : 0;
-    const bar = el('div', { class: 'bar', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': f.target, 'aria-valuenow': f.saved, 'aria-label': S('fund') }, el('i'));
+    const bar = el('div', { class: 'bar', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': f.target, 'aria-valuenow': f.saved, 'aria-label': S('fundT') }, el('i'));
     bar.firstChild.style.width = pct + '%';
-    $('factFund').replaceChildren(
-      el('span', { class: 'label' }, S('fund')),
-      el('span', null, el('span', { class: 'big' }, money(f.saved)), ' ', el('span', { class: 'small' }, S('of') + money(f.target))),
+    $('fund').replaceChildren(el('div', { class: 'fundrow' },
+      el('span', null, el('span', { class: 'label', style: 'display:block;color:var(--muted);margin-bottom:6px' }, S('fundT')), el('span', { class: 'big' }, money(f.saved))),
+      el('span', { class: 'of' }, S('of') + money(f.target)),
       bar,
-    );
-    $('factDays').replaceChildren(
-      el('span', { class: 'label' }, S('toGo')),
-      el('span', { class: 'big' }, daysUntil(d.deadline, t)),
-      el('span', { class: 'small' }, S('daysTo')(fmtDay(d.deadline, { day: 'numeric', month: 'short' }).replace('.', ''))),
+      f.note ? el('p', { class: 'note' }, tr(f.note)) : null,
+    ));
+    const groups = (d.budget && d.budget.groups) || [];
+    $('s-money').querySelector('.sec-h .small').hidden = !groups.length;
+    $('budget').replaceChildren(...groups.map((g) => el('div', { class: 'panel' },
+      el('h3', { class: 'card-h' }, tr(g.title)),
+      g.total != null ? el('div', { class: 'bigtotal' }, money(g.total)) : null,
+      el('table', { class: 'money' }, el('tbody', null, g.items.map(([label, n]) => el('tr', null, el('td', null, tr(label)), el('td', null, money(n)))))),
+    )));
+
+    // Credit and debts
+    $('s-credit').hidden = !d.credit;
+    if (d.credit) {
+      $('credit').replaceChildren(el('h3', { class: 'card-h' }, S('credit')), checklist(d.credit.steps || [], 'credit', edit, null));
+      $('debts').replaceChildren(el('h3', { class: 'card-h' }, S('debts')), el('ul', { class: 'debts' }, (d.credit.debts || []).map((x) => el('li', null, tr(x)))));
+    }
+
+    // Dad's notes
+    const notes = d.dadNotes || [];
+    $('notes').replaceChildren(...(notes.length ? notes.map((n) => el('div', { class: 'note-card' },
+      n.date ? el('div', { class: 'd' }, longDay(n.date)) : null, el('p', null, tr(n.text)))) : [el('p', { class: 'small' }, S('noNotes'))]));
+
+    // Updates: newest few, the rest in a sheet
+    const logs = [...d.log].sort((a, b) => b.date.localeCompare(a.date));
+    $('log').replaceChildren(
+      el('ol', { class: 'logs' }, logs.slice(0, 4).map((x) => el('li', null,
+        el('div', { class: 'd' }, longDay(x.date), x.by === 'eduardo' ? el('span', { class: 'by' }, S('byDad')) : null),
+        el('p', null, tr(x.text))))),
+      el('div', { class: 'logs-foot' },
+        edit ? el('button', { class: 'btn-ball', type: 'button', 'data-sheet': 'write' }, pencil(), S('writeBtn')) : null,
+        logs.length > 4 ? el('button', { class: 'btn-line', type: 'button', 'data-sheet': 'log' }, S('seeAll') + ' (' + logs.length + ')') : null),
     );
 
     if (sheetKind && sheetKind !== 'write' && $('sheet').open) fillSheet(sheetKind);
@@ -769,6 +784,9 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
     $('sheetBody').scrollTop = 0;
     if (kind === 'write') setTimeout(() => $('writeText') && $('writeText').focus(), 60);
   }
+
+  const jumpLine = () => { const j = $('jump'); if (j) j.classList.toggle('stuck', j.getBoundingClientRect().top <= 0 && scrollY > 0); };
+  addEventListener('scroll', jumpLine, { passive: true });
 
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-sheet]');
@@ -906,8 +924,9 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
     if (!b) return;
     const undo = b.hasAttribute('data-undo');
     const key = undo ? b.dataset.undo : b.dataset.done;
+    const credit = b.dataset.kind === 'credit';
     commit(undo ? 'undo' : 'done', (p) => {
-      const x = findTask(p, key);
+      const x = credit ? ((p.credit && p.credit.steps) || []).find((y) => taskKey(y) === key) : findTask(p, key);
       if (!x || (x.status === 'done') !== undo) return false;
       x.status = undo ? 'todo' : 'done';
       p.log.push({ date: isoToday(), by: 'eduardo', text: logText(undo ? 'logUndo' : 'logDone', x.text) });
