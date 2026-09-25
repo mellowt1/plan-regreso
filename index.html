@@ -104,6 +104,12 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 .hello .sub { color: var(--muted); font-size: 17px; }
 @media (min-width: 860px) { .hello h1 { max-width: none; } .hello .sub { font-size: 18px; } }
 
+/* Goals */
+.goals { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.goals li { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: var(--surface); font-weight: 700; line-height: 1.3; }
+.goals .n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--table); color: #fff; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 15px; }
+@media (max-width: 859px) { .goals { grid-template-columns: minmax(0, 1fr); gap: 8px; margin-bottom: 16px; } .goals li { padding: 10px 14px; } }
+
 /* The table */
 .table {
   display: grid; grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr); grid-template-areas: "dad net paul";
@@ -251,7 +257,35 @@ li.next .box { border: 2px solid var(--ball); }
 .log .d { font-weight: 700; color: var(--ball-ink); font-size: 14px; }
 .svc .price { font-weight: 700; color: var(--done); font-size: 15px; }
 .svc .price.tbd { color: var(--muted); font-weight: 400; }
+.money { width: 100%; border-collapse: collapse; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.money td { padding: 9px 0; border-top: 1px solid var(--line); vertical-align: top; }
+.money tr:first-child td { border-top: 0; }
+.money td:last-child { text-align: right; padding-left: 16px; white-space: nowrap; }
+.money tr.total td { border-top: 2px solid var(--ink); font-weight: 700; }
+.note-card { margin-top: 10px; padding: 14px 16px; border-radius: 10px; background: var(--surface); border-left: 4px solid var(--ball); }
+.note-card .d { font-weight: 700; color: var(--ball-ink); font-size: 14px; margin-bottom: 4px; }
 .num-c { width: 26px; height: 26px; border-radius: 50%; background: var(--chip); display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+
+/* Dad's own edits */
+.wa-link { align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 15px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.wa-link svg { width: 18px; height: 18px; }
+.acts-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.btn-line { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border: 2px solid var(--ink); border-radius: 999px; background: var(--surface); color: var(--ink); font-weight: 700; font-size: 17px; cursor: pointer; }
+.btn-line svg { width: 20px; height: 20px; }
+@media (max-width: 859px) { .acts-row { flex-direction: column; } .acts-row > * { justify-content: center; } }
+button.box { position: relative; padding: 0; background: none; cursor: pointer; width: 26px; height: 26px; margin-top: 0; color: inherit; }
+button.box::after { content: ""; position: absolute; inset: -9px; }
+li.done button.box { background: var(--done); border-color: var(--done); color: #fff; }
+.addrow { display: flex; gap: 8px; margin-top: 12px; }
+.addrow input, .write textarea { flex-grow: 1; min-width: 0; font: inherit; font-size: 17px; color: var(--ink); background: var(--surface); border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px; outline: none; }
+.addrow input:focus, .write textarea:focus { border-color: var(--table); }
+.addrow button { flex: none; min-height: 52px; padding: 0 18px; border: 0; border-radius: 12px; background: var(--ink); color: var(--bg); font-weight: 700; cursor: pointer; }
+.write { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.write textarea { width: 100%; min-height: 150px; resize: vertical; line-height: 1.45; }
+.write .btn-ball { align-self: stretch; }
+.by { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--chip); color: var(--ink); vertical-align: 1px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 20; width: max-content; max-width: calc(100% - 32px); padding: 14px 20px; border-radius: 14px; background: var(--ink); color: var(--bg); font-weight: 700; box-shadow: var(--shadow); text-align: center; }
+.toast.bad { background: var(--wait-bg); color: var(--wait-ink); }
 
 @media (prefers-reduced-motion: reduce) { .ball, .dots i { animation: none; } .dots i { opacity: 1; } }
 </style>
@@ -285,11 +319,18 @@ li.next .box { border: 2px solid var(--ball); }
       <p class="sub" id="subline"></p>
     </section>
 
+    <ol class="goals" id="goals" aria-label="Objetivos"></ol>
+
     <section class="table" aria-labelledby="headline">
       <div class="side dad" id="dadSide"></div>
       <div class="net" aria-hidden="true"></div>
       <div class="side paul" id="paulSide"></div>
     </section>
+
+    <div class="acts-row" id="dadActs" hidden>
+      <button class="btn-line" type="button" data-sheet="write" id="writeBtn"></button>
+      <button class="btn-line" type="button" data-sheet="tasks" id="tickBtn"></button>
+    </div>
 
     <section class="facts">
       <div class="score" id="score"></div>
@@ -303,6 +344,7 @@ li.next .box { border: 2px solid var(--ball); }
     <nav class="more" aria-label="Más">
       <button type="button" data-sheet="tasks"><span data-t="lTasks">Todas las tareas</span><span aria-hidden="true">→</span></button>
       <button type="button" data-sheet="plan"><span data-t="lPlan">El plan completo</span><span aria-hidden="true">→</span></button>
+      <button type="button" data-sheet="money"><span data-t="lMoney">Dinero y crédito</span><span aria-hidden="true">→</span></button>
       <button type="button" data-sheet="log"><span data-t="lLog">Lo que ha pasado</span><span aria-hidden="true">→</span></button>
       <button type="button" data-sheet="more"><span data-t="lMore">Servicios y reglas</span><span aria-hidden="true">→</span></button>
     </nav>
@@ -315,6 +357,8 @@ li.next .box { border: 2px solid var(--ball); }
     </footer>
   </div>
 </main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
   <div class="sheet-head">
@@ -360,6 +404,17 @@ li.next .box { border: 2px solid var(--ball); }
       yours: 'Lo tuyo', pauls: 'Lo que hace Paul', doneOf: (a, b) => `${a} de ${b} hechas`, waiting: 'En espera', doing: 'En curso',
       now: 'Ahora', goal: 'Meta', range: (a, b) => a + ' al ' + b, noPrice: 'Precio por definir',
       services: 'Los tres servicios', rules: 'Reglas de la casa', close: 'Cerrar',
+      goals: 'Objetivos', lMoney: 'Dinero y crédito', total: 'Total', credit: 'Reconstruir el crédito en EE. UU.', debts: 'Deudas',
+      dadNotes: 'Notas de papá', budgetNote: 'Números de la hoja que hicimos juntos.',
+      markDone: 'Listo, ya lo hice', waPaul: 'Escribir a Paul por WhatsApp',
+      writeBtn: 'Escribir una novedad', tickBtn: 'Marcar mis tareas', lWrite: 'Escribir una novedad',
+      writeHint: 'Cuéntale a Paul cómo vas, qué averiguaste o qué necesitas. Le llega un aviso.',
+      writePh: 'Hoy hablé con...', send: 'Enviar a Paul',
+      addPh: 'Una tarea nueva para ti', add: 'Agregar', tickHint: 'Toca el cuadro para marcar una tarea como hecha. Paul recibe un aviso.',
+      saving: 'Guardando…', savedDone: 'Hecho. Paul recibió el aviso.', savedNo: 'Guardado. Paul lo verá al abrir el plan.',
+      saveFail: 'No se pudo guardar. Revisa la conexión y prueba otra vez.',
+      logDone: (t) => 'Terminé: ' + t, logUndo: (t) => 'Volví a abrir: ' + t, logAdd: (t) => 'Nueva tarea: ' + t,
+      byDad: 'Papá',
       nudgeT: '¿Te aviso cuando te toque?', nudgeP: 'Un aviso en tu teléfono cuando Paul te devuelva la pelota.',
       nudgeBtn: 'Sí, avísame', nudgeLater: 'Ahora no',
       nudgeIos: 'En iPhone: toca Compartir y después “Añadir a pantalla de inicio”. Abre el plan desde ese ícono y aquí podrás activar los avisos.',
@@ -385,6 +440,17 @@ li.next .box { border: 2px solid var(--ball); }
       yours: 'Yours', pauls: 'What Paul does', doneOf: (a, b) => `${a} of ${b} done`, waiting: 'Waiting', doing: 'In progress',
       now: 'Now', goal: 'Goal', range: (a, b) => a + ' to ' + b, noPrice: 'Price to be set',
       services: 'The three services', rules: 'House rules', close: 'Close',
+      goals: 'Goals', lMoney: 'Money and credit', total: 'Total', credit: 'Rebuild US credit', debts: 'Debts',
+      dadNotes: 'Dad’s notes', budgetNote: 'Numbers from the sheet we made together.',
+      markDone: 'Done, I did it', waPaul: 'Message Paul on WhatsApp',
+      writeBtn: 'Write an update', tickBtn: 'Tick off my tasks', lWrite: 'Write an update',
+      writeHint: 'Tell Paul how it is going, what you found out or what you need. He gets a notification.',
+      writePh: 'Today I talked to...', send: 'Send to Paul',
+      addPh: 'A new task for you', add: 'Add', tickHint: 'Tap the box to mark a task as done. Paul gets a notification.',
+      saving: 'Saving…', savedDone: 'Done. Paul got the notification.', savedNo: 'Saved. Paul will see it when he opens the plan.',
+      saveFail: 'Could not save. Check the connection and try again.',
+      logDone: (t) => 'Done: ' + t, logUndo: (t) => 'Reopened: ' + t, logAdd: (t) => 'New task: ' + t,
+      byDad: 'Dad',
       nudgeT: 'Want a nudge when it is your turn?', nudgeP: 'A notification on your phone when Paul sends the ball back.',
       nudgeBtn: 'Yes, notify me', nudgeLater: 'Not now',
       nudgeIos: 'On iPhone: tap Share, then “Add to Home Screen”. Open the plan from that icon and you can turn on notifications here.',
@@ -404,14 +470,22 @@ li.next .box { border: 2px solid var(--ball); }
 
   const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
-  async function decrypt(pin, blob) {
+  const b64 = (buf) => { let s = ''; new Uint8Array(buf).forEach((c) => { s += String.fromCharCode(c); }); return btoa(s); };
+  async function keyFor(pin, salt, iter) {
     const base = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
-    const key = await crypto.subtle.deriveKey(
-      { name: 'PBKDF2', hash: 'SHA-256', salt: unb64(blob.salt), iterations: blob.iter },
-      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
-    );
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: iter }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+  async function decrypt(pin, blob) {
+    const key = await keyFor(pin, unb64(blob.salt), blob.iter);
     const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(blob.iv) }, key, unb64(blob.ct));
     return JSON.parse(new TextDecoder().decode(pt));
+  }
+  // Same scheme as build.mjs, used when Dad saves a change himself.
+  async function encrypt(pin, obj) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await keyFor(pin, salt, 200000), enc.encode(JSON.stringify(obj)));
+    return { v: 1, iter: 200000, salt: b64(salt), iv: b64(iv), ct: b64(ct) };
   }
 
   // The plan lives on the Worker (edited from admin.html). data.json is the
@@ -457,6 +531,7 @@ li.next .box { border: 2px solid var(--ball); }
   const check = () => svg('<path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>');
   const chat = () => svg('<path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11.5l2.3 2.3 4.7-4.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>', '0 0 24 24');
   const ball = () => el('div', { class: 'ball', 'aria-hidden': 'true' });
+  const pencil = () => svg('<path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>', '0 0 24 24');
 
   const day = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
   const today = () => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); };
@@ -493,6 +568,11 @@ li.next .box { border: 2px solid var(--ball); }
     const today_ = cap(t.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
     $('subline').textContent = S('sub')(today_, ph.n, d.phases.length, tr(ph.title), daysUntil(d.deadline, t));
 
+    const goals = d.objectives || [];
+    $('goals').hidden = !goals.length;
+    $('goals').setAttribute('aria-label', S('goals'));
+    $('goals').replaceChildren(...goals.map((g, i) => el('li', null, el('span', { class: 'n', 'aria-hidden': 'true' }, i + 1), tr(g))));
+
     // Dad's side: the ball sits on his next task
     const dad = [el('span', { class: 'label who' }, S('dad'))];
     if (next) {
@@ -503,7 +583,10 @@ li.next .box { border: 2px solid var(--ball); }
         ball(),
         el('span', { class: 'label' }, S('shot')),
         el('p', { class: 'step' }, tr(next.text)),
-        wa ? el('a', { class: 'btn-ball', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('tellPaul')) : null,
+        canEdit()
+          ? [el('button', { class: 'btn-ball', type: 'button', 'data-done': taskKey(next) }, check(), S('markDone')),
+             wa ? el('a', { class: 'wa-link', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('waPaul')) : null]
+          : wa ? el('a', { class: 'btn-ball', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('tellPaul')) : null,
       ));
       const rest = open(mine).filter((x) => x !== next);
       const shown = [...rest.filter((x) => x.paulWaits), ...rest.filter((x) => !x.paulWaits)].slice(0, 2);
@@ -517,6 +600,9 @@ li.next .box { border: 2px solid var(--ball); }
       dad.push(el('div', { class: 'card shot' }, el('p', { class: 'step' }, S('nothing'))));
     }
     $('dadSide').replaceChildren(...dad);
+    $('dadActs').hidden = !canEdit();
+    $('writeBtn').replaceChildren(pencil(), S('writeBtn'));
+    $('tickBtn').replaceChildren(check(), S('tickBtn'));
 
     // Paul's side: what he is on, what comes after, what waits on Dad
     const pNow = nextOf(pauls);
@@ -573,7 +659,7 @@ li.next .box { border: 2px solid var(--ball); }
       el('span', { class: 'small' }, S('daysTo')(fmtDay(d.deadline, { day: 'numeric', month: 'short' }).replace('.', ''))),
     );
 
-    if (sheetKind && $('sheet').open) fillSheet(sheetKind);
+    if (sheetKind && sheetKind !== 'write' && $('sheet').open) fillSheet(sheetKind);
   }
 
   // ---------- sheets ----------
@@ -582,9 +668,12 @@ li.next .box { border: 2px solid var(--ball); }
   function taskList(list) {
     const order = { blocked: 0, doing: 1, todo: 2, done: 3 };
     const next = nextOf(list);
+    const mine = list === data.tasks.eduardo && canEdit();
     return el('ul', { class: 'list' }, [...list].sort((a, b) => order[a.status] - order[b.status]).map((x) =>
       el('li', { class: x.status + (x === next && list === data.tasks.eduardo ? ' next' : '') },
-        el('span', { class: 'box', 'aria-hidden': 'true' }, x.status === 'done' ? check() : null),
+        mine
+          ? el('button', { class: 'box', type: 'button', role: 'checkbox', 'aria-checked': String(x.status === 'done'), 'aria-label': tr(x.text), [x.status === 'done' ? 'data-undo' : 'data-done']: taskKey(x) }, x.status === 'done' ? check() : null)
+          : el('span', { class: 'box', 'aria-hidden': 'true' }, x.status === 'done' ? check() : null),
         el('div', null,
           el('div', { class: 't' }, tr(x.text)),
           x.status === 'blocked' ? el('span', { class: 'tag' }, tr(x.note) || S('waiting')) : null,
@@ -601,7 +690,10 @@ li.next .box { border: 2px solid var(--ball); }
     const count = (l) => S('doneOf')(l.filter((x) => x.status === 'done').length, l.length);
     if (kind === 'tasks') {
       title = S('lTasks');
-      body.push(el('h3', null, S('yours')), el('p', { class: 'small' }, count(d.tasks.eduardo)), taskList(d.tasks.eduardo));
+      body.push(el('h3', null, S('yours')), el('p', { class: 'small' }, count(d.tasks.eduardo) + (canEdit() ? '. ' + S('tickHint') : '')), taskList(d.tasks.eduardo));
+      if (canEdit()) body.push(el('form', { class: 'addrow', id: 'addForm' },
+        el('input', { id: 'addText', type: 'text', placeholder: S('addPh'), 'aria-label': S('addPh'), maxlength: 200, enterkeyhint: 'done' }),
+        el('button', { type: 'submit' }, S('add'))));
       body.push(el('h3', null, S('pauls')), el('p', { class: 'small' }, count(d.tasks.paul)), taskList(d.tasks.paul));
     } else if (kind === 'plan') {
       title = S('lPlan');
@@ -620,11 +712,37 @@ li.next .box { border: 2px solid var(--ball); }
           ),
         );
       })));
+      if (d.dadNotes && d.dadNotes.length) {
+        body.push(el('h3', null, S('dadNotes')), ...d.dadNotes.map((n) => el('div', { class: 'note-card' },
+          n.date ? el('div', { class: 'd' }, cap(fmtDay(n.date, { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''))) : null,
+          el('p', null, tr(n.text)))));
+      }
+    } else if (kind === 'write') {
+      title = S('lWrite');
+      body.push(el('form', { class: 'write', id: 'writeForm' },
+        el('p', { class: 'small' }, S('writeHint')),
+        el('textarea', { id: 'writeText', placeholder: S('writePh'), 'aria-label': S('lWrite'), maxlength: 2000 }),
+        el('button', { class: 'btn-ball', type: 'submit' }, S('send'))));
+    } else if (kind === 'money') {
+      title = S('lMoney');
+      if (d.budget) {
+        body.push(el('p', { class: 'intro' }, S('budgetNote')));
+        d.budget.groups.forEach((g) => body.push(el('h3', null, tr(g.title)), el('table', { class: 'money' }, el('tbody', null,
+          g.items.map(([label, n]) => el('tr', null, el('td', null, tr(label)), el('td', null, money(n)))),
+          g.total != null ? el('tr', { class: 'total' }, el('td', null, S('total')), el('td', null, money(g.total))) : null,
+        ))));
+      }
+      if (d.credit) {
+        body.push(el('h3', null, S('credit')), el('ul', { class: 'list' }, d.credit.steps.map((x) =>
+          el('li', { class: x.status }, el('span', { class: 'box', 'aria-hidden': 'true' }, x.status === 'done' ? check() : null), el('div', { class: 't' }, tr(x.text))))));
+        if (d.credit.debts && d.credit.debts.length) body.push(el('h3', null, S('debts')), el('ul', { class: 'list' }, d.credit.debts.map((x) =>
+          el('li', { style: 'grid-template-columns: 1fr' }, el('span', null, tr(x))))));
+      }
     } else if (kind === 'log') {
       title = S('lLog');
       body.push(el('ol', { class: 'list log' }, [...d.log].sort((a, b) => b.date.localeCompare(a.date)).map((x) =>
         el('li', { style: 'grid-template-columns: 1fr' },
-          el('div', null, el('div', { class: 'd' }, cap(fmtDay(x.date, { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''))), el('p', null, tr(x.text))),
+          el('div', null, el('div', { class: 'd' }, cap(fmtDay(x.date, { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', '')), x.by === 'eduardo' ? el('span', { class: 'by' }, S('byDad')) : null), el('p', null, tr(x.text))),
         ))));
     } else {
       title = S('lMore');
@@ -649,6 +767,7 @@ li.next .box { border: 2px solid var(--ball); }
     const dlg = $('sheet');
     if (!dlg.open) dlg.showModal();
     $('sheetBody').scrollTop = 0;
+    if (kind === 'write') setTimeout(() => $('writeText') && $('writeText').focus(), 60);
   }
 
   document.addEventListener('click', (e) => {
@@ -697,6 +816,7 @@ li.next .box { border: 2px solid var(--ball); }
   async function tryOpen(pin) {
     const d = await decrypt(pin, blob); // throws on wrong PIN
     data = d;
+    pinNow = pin;
     render(d);
     $('gate').hidden = true;
     $('app').hidden = false;
@@ -726,7 +846,92 @@ li.next .box { border: 2px solid var(--ball); }
     }
   });
 
-  $('logout').addEventListener('click', () => { store.clear(); data = null; showGate(); });
+  $('logout').addEventListener('click', () => { store.clear(); data = null; pinNow = null; showGate(); });
+
+  // ---------- Dad's own edits ----------
+  // Each change is applied to the latest copy on the Worker, re-encrypted with the
+  // PIN and saved with the edit key from inside the plan. A save by Paul in between
+  // just means one more try. The Worker then nudges Paul's phones.
+  let pinNow = null;
+  let busy = false;
+  const canEdit = () => !!(data && data.edit && data.edit.key && pinNow);
+  const taskKey = (x) => (x.text && typeof x.text === 'object') ? x.text.es : x.text;
+  const findTask = (plan, key) => plan.tasks.eduardo.find((x) => taskKey(x) === key);
+  const isoToday = () => { const t = new Date(); return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0'); };
+  const logText = (k, text) => ({ es: STR.es[k](typeof text === 'object' ? text.es : text), en: STR.en[k](typeof text === 'object' ? (text.en || text.es) : text) });
+  let toastTimer = 0;
+  function toast(msg, bad) {
+    const t = $('toast');
+    t.textContent = msg; t.classList.toggle('bad', !!bad); t.hidden = !msg;
+    clearTimeout(toastTimer);
+    if (msg) toastTimer = setTimeout(() => { t.hidden = true; }, bad ? 6000 : 3500);
+  }
+
+  async function commit(kind, mutate) {
+    if (busy || !canEdit()) return false;
+    busy = true;
+    toast(S('saving'));
+    try {
+      for (let i = 0; i < 3; i++) {
+        const res = await fetch(API + '/api/data', { cache: 'no-store' });
+        if (!res.ok) throw new Error('load ' + res.status);
+        const doc = await res.json();
+        const fresh = await decrypt(pinNow, doc.blob);
+        if (mutate(fresh) === false) { toast(''); data = fresh; rev = doc.rev; render(data); return false; }
+        fresh.updated = isoToday();
+        const b = await encrypt(pinNow, fresh);
+        const put = await fetch(API + '/api/data', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + fresh.edit.key },
+          body: JSON.stringify({ blob: b, rev: doc.rev, kind }),
+        });
+        if (put.status === 409) continue;
+        const out = await put.json().catch(() => ({}));
+        if (!put.ok) throw new Error(out.error || put.status);
+        rev = out.rev; blob = b; data = fresh;
+        store.set(JSON.stringify(b), BLOB_KEY);
+        render(data);
+        toast(out.sent ? S('savedDone') : S('savedNo'));
+        return true;
+      }
+      throw new Error('conflict');
+    } catch {
+      toast(S('saveFail'), true);
+      return false;
+    } finally { busy = false; }
+  }
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-done],[data-undo]');
+    if (!b) return;
+    const undo = b.hasAttribute('data-undo');
+    const key = undo ? b.dataset.undo : b.dataset.done;
+    commit(undo ? 'undo' : 'done', (p) => {
+      const x = findTask(p, key);
+      if (!x || (x.status === 'done') !== undo) return false;
+      x.status = undo ? 'todo' : 'done';
+      p.log.push({ date: isoToday(), by: 'eduardo', text: logText(undo ? 'logUndo' : 'logDone', x.text) });
+    });
+  });
+
+  document.addEventListener('submit', async (e) => {
+    if (e.target.id === 'addForm') {
+      e.preventDefault();
+      const t = $('addText').value.trim();
+      if (!t) return;
+      const ok = await commit('add', (p) => {
+        p.tasks.eduardo.push({ status: 'todo', text: { es: t, en: t }, by: 'eduardo' });
+        p.log.push({ date: isoToday(), by: 'eduardo', text: logText('logAdd', t) });
+      });
+      if (ok && $('addText')) $('addText').value = '';
+    } else if (e.target.id === 'writeForm') {
+      e.preventDefault();
+      const t = $('writeText').value.trim();
+      if (!t) return;
+      const ok = await commit('update', (p) => { p.log.push({ date: isoToday(), by: 'eduardo', text: { es: t, en: t } }); });
+      if (ok) $('sheet').close();
+    }
+  });
 
   // ---------- push ----------
   // One nudge per phone: "the ball is on your side". The subscription is sent with

@@ -8,6 +8,8 @@
 <title>Plan de regreso · edit</title>
 <meta name="theme-color" content="#1F6B4F">
 <link rel="icon" href="icon-192.png">
+<link rel="manifest" href="admin.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
 <style>
 :root {
@@ -87,6 +89,7 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
 .savebar .state { flex-grow: 1; font-size: 15px; min-width: 150px; }
 .savebar .check { color: var(--bg); }
 .savebar .check input { accent-color: var(--ball); }
+.dadtag { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; padding: 0 7px; border-radius: 999px; background: var(--ball); color: #16211C; vertical-align: 1px; }
 .pad-bottom { height: 24px; }
 </style>
 </head>
@@ -156,8 +159,13 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
 
     <section class="card">
       <h2>Notifications</h2>
-      <p class="hint" id="pushInfo">Dad turns them on from his page. A test goes to every phone that did.</p>
-      <button class="btn ghost" type="button" id="testPush" style="margin-top: 12px">Send a test notification</button>
+      <p class="hint">You get one whenever Dad ticks a task, adds one or writes an update. Dad gets one whenever you save (untick “Notify Dad” to skip).</p>
+      <p class="hint" id="myPush" role="status"></p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px">
+        <button class="btn ghost" type="button" id="myPushBtn" hidden>Notify me on this phone</button>
+        <button class="btn ghost" type="button" id="testPush" data-role="dad">Test Dad’s phones</button>
+        <button class="btn ghost" type="button" id="testMine" data-role="paul">Test my phones</button>
+      </div>
       <p class="hint" id="testMsg" role="status"></p>
     </section>
     <div class="pad-bottom"></div>
@@ -281,7 +289,7 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
     $('logList').replaceChildren(...rows.map(({ x, i }) => {
       const t = bi(x.text);
       return el('div', { class: 'logrow' },
-        el('span', { class: 'd' }, shortDate(x.date)),
+        el('span', { class: 'd' }, shortDate(x.date), x.by === 'eduardo' ? el('span', { class: 'dadtag', style: 'display:table;margin:4px 0 0' }, 'Dad') : null),
         el('p', null, t.es, t.en ? el('span', { class: 'en', style: 'display:block' }, t.en) : null),
         el('button', { class: 'icon del', type: 'button', 'aria-label': 'Delete entry', onclick: () => { if (confirm('Delete this log entry?')) { plan.log.splice(i, 1); renderLog(); changed(); } } }, '✕'),
       );
@@ -308,7 +316,7 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
     const dirty = JSON.stringify(plan) !== JSON.stringify(orig);
     const before = nextOf(orig.tasks.eduardo), after = nextOf(plan.tasks.eduardo);
     const ballMoved = !!after && (!before || bi(before.text).es !== bi(after.text).es);
-    if (!notifyTouched) $('notify').checked = dirty && ballMoved;
+    if (!notifyTouched) $('notify').checked = dirty;
     $('save').disabled = !dirty;
     $('state').textContent = dirty ? (ballMoved ? 'Unsaved · Dad has a new shot' : 'Unsaved changes') : `Saved · version ${rev}`;
   }
@@ -396,14 +404,53 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
     }
   });
 
-  $('testPush').addEventListener('click', async () => {
+  // ---------- my own notifications ----------
+  const pushOk = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const b64uBytes = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0));
+  if (pushOk() && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  async function checkMine() {
+    const btn = $('myPushBtn'), msg = $('myPush');
+    btn.hidden = true;
+    if (!pushOk()) { msg.textContent = isIos ? 'On iPhone: Share, “Add to Home Screen”, open this page from that icon, then turn it on here.' : 'This browser cannot receive notifications.'; return; }
+    if (Notification.permission === 'denied') { msg.textContent = 'Notifications are blocked for this site in the browser settings.'; return; }
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) { msg.textContent = 'This phone is on. You hear about Dad’s changes here.'; await sendMine(sub).catch(() => {}); return; }
+    } catch {}
+    msg.textContent = 'This phone is not getting Dad’s changes yet.';
+    btn.hidden = false;
+  }
+  async function sendMine(sub) {
+    const res = await fetch(API + '/api/subscribe', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      body: JSON.stringify({ sub: sub.toJSON(), lang: 'en', role: 'paul' }),
+    });
+    if (!res.ok) throw new Error('subscribe ' + res.status);
+  }
+  $('myPushBtn').addEventListener('click', async () => {
+    try {
+      if (await Notification.requestPermission() !== 'granted') return checkMine();
+      const reg = await navigator.serviceWorker.ready;
+      const { key } = await (await fetch(API + '/api/vapid')).json();
+      const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(key) });
+      await sendMine(sub);
+    } catch { $('myPush').textContent = 'Could not turn it on. Try again.'; return; }
+    checkMine();
+  });
+
+  $('testMine').addEventListener('click', (e) => testPush(e.currentTarget.dataset.role));
+  $('testPush').addEventListener('click', (e) => testPush(e.currentTarget.dataset.role));
+  async function testPush(role) {
     $('testMsg').textContent = 'Sending…';
     try {
-      const res = await fetch(API + '/api/test-push', { method: 'POST', headers: { Authorization: 'Bearer ' + token } });
+      const res = await fetch(API + '/api/test-push?role=' + role, { method: 'POST', headers: { Authorization: 'Bearer ' + token } });
       const out = await res.json();
       $('testMsg').textContent = res.ok ? `Sent to ${out.sent} of ${out.phones} phone${out.phones === 1 ? '' : 's'}.` : 'Not accepted: ' + out.error;
     } catch { $('testMsg').textContent = 'Could not reach the Worker.'; }
-  });
+  }
 
   window.addEventListener('beforeunload', (e) => { if (plan && JSON.stringify(plan) !== JSON.stringify(orig)) { e.preventDefault(); e.returnValue = ''; } });
 
@@ -424,6 +471,7 @@ section.card > h2 small { font-family: var(--body); font-weight: 400; font-size:
     }
     $('gate').hidden = true;
     $('app').hidden = false;
+    checkMine();
     return true;
   }
 

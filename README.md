@@ -1,6 +1,6 @@
 # Plan de regreso
 
-A one-page, read-only status app for Eduardo: what we are working on together, the plan, and how it is going. Spanish and English (ES | EN switch, remembered per device; Spanish phones open in Spanish), mobile first, no framework, no build step for the page itself.
+A one-page status app for Eduardo and Paul: what we are working on together, the plan, and how it is going. Spanish and English (ES | EN switch, remembered per device; Spanish phones open in Spanish), mobile first, no framework, no build step for the page itself.
 
 Live: https://mellowt1.github.io/plan-regreso/
 
@@ -19,6 +19,12 @@ Live: https://mellowt1.github.io/plan-regreso/
 - **Secrets:** `ADMIN_TOKEN`, `SUB_KEY` and the VAPID keys are Worker secrets, with a copy in `plan-regreso-secrets.txt` outside the repo. `SUB_KEY` is also inside the encrypted plan (`push.key`), so only someone with the PIN can sign a phone up.
 - **From the terminal:** `node sync.mjs pull` gets the latest edits into `content/plan.json`; `node sync.mjs push [--notify]` sends it back. Both need `PLAN_PIN`; push also needs `PLAN_ADMIN`. Pull before editing plan.json by hand.
 - **Deploying the Worker:** `npx wrangler deploy` in this folder.
+
+## Dad edits and two-way notifications (since 2026-09-25)
+
+- Dad can tick his tasks (and untick), add a task for himself and write an update from his page. Each change is applied to the latest copy on the Worker, re-encrypted with the PIN and saved with `edit.key` from inside the plan (Worker secret `EDIT_KEY`, copy in `plan-regreso-secrets.txt`). His entries in the log carry `by: "eduardo"`.
+- Every save by Dad pushes Paul's phones (turn on in admin.html, Notifications card). Every save by Paul pushes Dad's phones unless "Notify Dad" is unticked. Subscriptions carry `role: dad | paul`.
+- The page follows the Google Sheet "Plan de Regreso: Oct 1" (goals, tasks, budget, credit). Passwords, SSN and birth date from that sheet never go into the plan.
 
 ## Updating the content (old way, still works for data.json)
 
@@ -50,4 +56,4 @@ Opens on http://localhost:8080.
 - Everything Eduardo reads is in Spanish, short and plain.
 - No dashes as punctuation in any text.
 - No invented numbers or dates. Leave a field empty rather than guess.
-- Immigration status details and household expenses are not in this app.
+- Immigration status details are not in this app. The budget from the shared sheet is (sheet Money and credit).

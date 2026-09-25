@@ -1,6 +1,6 @@
 // Offline cache. Only the app's own files are fetched.
-const CACHE = 'plan-regreso-v3';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './data.json'];
+const CACHE = 'plan-regreso-v4';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './data.json', './admin.html', './admin.webmanifest'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
