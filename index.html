@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap">
 <style>
 :root {
   --bg: #F2F0EA; --surface: #FFFFFF; --ink: #16211C; --muted: #56605A; --line: #DAD6CB; --chip: #E2DFD5;
@@ -104,72 +104,180 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 .hello .sub { color: var(--muted); font-size: 17px; }
 @media (min-width: 860px) { .hello h1 { max-width: none; } .hello .sub { font-size: 18px; } }
 
-/* Overview */
-.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
-@media (max-width: 859px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
-.panel { background: var(--surface); border-radius: 16px; padding: 20px 22px; min-width: 0; }
-@media (max-width: 859px) { .panel { padding: 16px 16px 18px; } }
-.panel > .label { color: var(--muted); display: block; margin-bottom: 8px; }
-.next { position: relative; border-left: 6px solid var(--ball); display: flex; flex-direction: column; gap: 12px; }
-.next > .label { color: var(--ball-ink); margin-bottom: 0; }
-.next .step { font-family: var(--display); font-weight: 600; font-size: clamp(23px, 2.6vw, 30px); line-height: 1.2; }
-.next .btn-ball { align-self: flex-start; }
-.next .tag { margin-top: -4px; }
-@media (max-width: 859px) { .next .btn-ball { align-self: stretch; min-height: 56px; } }
-.goals { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.goals li { display: flex; align-items: center; gap: 12px; font-weight: 700; line-height: 1.3; }
-.goals .n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--table); color: #fff; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 15px; }
+/* Two faces of one page: A "La hoja" on phones, E "Escritorio" on a computer. */
+:root {
+  --a-bg: #FFFFFF; --a-ink: #1B1F24; --a-soft: #3A424C; --a-muted: #5A636E; --a-line: #E3E6EA; --a-line2: #EEF0F2; --a-head: #F6F8FA; --a-chip: #F1F3F5;
+  --a-green: #1D7A4E; --a-green-bg: #E7F3EC; --a-next: #FFF7ED; --a-orange: #C2410C; --a-done: #8A929B; --a-total: #1B1F24; --a-total-ink: #FFFFFF;
+  --e-bg: #F4F1EC; --e-tile: #FFFFFF; --e-ink: #1C1917; --e-muted: #6B6259; --e-line: #EFEAE2; --e-teal: #0F766E; --e-teal-bg: #CCE7E4;
+  --e-amber: #B45309; --e-amber-bar: #E7A15A; --e-done: #15803D; --e-empty: #E7E1D8; --e-next: #FFF6EB; --e-seg: #E6E0D6; --e-faded: #9A9086;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --a-bg: #0F1215; --a-ink: #E6E9EC; --a-soft: #C4CAD1; --a-muted: #9AA3AD; --a-line: #2A3036; --a-line2: #22272C; --a-head: #171B1F; --a-chip: #1D2226;
+    --a-green: #4CC38A; --a-green-bg: #16301F; --a-next: #2A1D12; --a-orange: #F5A26B; --a-done: #6F7780; --a-total: #E6E9EC; --a-total-ink: #0F1215;
+    --e-bg: #141210; --e-tile: #1E1B18; --e-ink: #EDE8E1; --e-muted: #A89F94; --e-line: #2E2A25; --e-teal: #3FB8AC; --e-teal-bg: #173A37;
+    --e-amber: #E39A5A; --e-amber-bar: #B7773C; --e-done: #4CB872; --e-empty: #3A352F; --e-next: #2B2118; --e-seg: #2A2622; --e-faded: #7D746A;
+  }
+}
+:root[data-theme="dark"] {
+  --a-bg: #0F1215; --a-ink: #E6E9EC; --a-soft: #C4CAD1; --a-muted: #9AA3AD; --a-line: #2A3036; --a-line2: #22272C; --a-head: #171B1F; --a-chip: #1D2226;
+  --a-green: #4CC38A; --a-green-bg: #16301F; --a-next: #2A1D12; --a-orange: #F5A26B; --a-done: #6F7780; --a-total: #E6E9EC; --a-total-ink: #0F1215;
+  --e-bg: #141210; --e-tile: #1E1B18; --e-ink: #EDE8E1; --e-muted: #A89F94; --e-line: #2E2A25; --e-teal: #3FB8AC; --e-teal-bg: #173A37;
+  --e-amber: #E39A5A; --e-amber-bar: #B7773C; --e-done: #4CB872; --e-empty: #3A352F; --e-next: #2B2118; --e-seg: #2A2622; --e-faded: #7D746A;
+}
+#desk { display: none; }
+body.in { background: var(--a-bg); }
+@media (min-width: 1024px) {
+  #phone { display: none; }
+  #desk { display: flex; }
+  body.in { background: var(--e-bg); }
+}
+body.in .tail { color: var(--a-ink); }
+@media (min-width: 1024px) { body.in .tail { color: var(--e-ink); } }
 
-.jump { position: sticky; top: 0; z-index: 4; margin: 20px -16px 0; padding: 10px 16px; background: var(--bg); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid transparent; }
-.jump::-webkit-scrollbar { display: none; }
-.jump.stuck { border-bottom-color: var(--line); }
-.jump a { flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--chip); display: inline-flex; align-items: center; font-weight: 700; font-size: 15px; text-decoration: none; }
-.jump a:hover { background: var(--line); }
-@media (min-width: 860px) { .jump { margin: 24px -40px 0; padding: 12px 40px; } }
+/* A: La hoja */
+.A { font-family: "IBM Plex Sans", system-ui, sans-serif; color: var(--a-ink); background: var(--a-bg); max-width: 640px; margin: 0 auto; }
+.A .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+.a-top { padding: calc(20px + env(safe-area-inset-top)) 16px 14px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid var(--a-line); }
+.a-top .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.a-top .brand { font-family: inherit; font-weight: 700; font-size: 20px; }
+.a-top .sub { font-size: 14px; color: var(--a-muted); }
+.a-top .sub b { color: var(--a-ink); }
+.seg { display: inline-flex; background: var(--a-chip); border-radius: 8px; padding: 3px; }
+.seg button { border: 0; background: none; font: 600 13px "IBM Plex Sans", sans-serif; padding: 0 12px; min-height: 36px; min-width: 44px; border-radius: 6px; cursor: pointer; color: var(--a-ink); }
+.seg button[aria-pressed="true"] { background: var(--a-ink); color: var(--a-bg); }
+.a-tabs { position: sticky; top: 0; z-index: 4; display: flex; padding: 0 8px; background: var(--a-bg); border-bottom: 1px solid var(--a-line); overflow-x: auto; scrollbar-width: none; }
+.a-tabs::-webkit-scrollbar { display: none; }
+.a-tabs a { flex: none; padding: 0 12px; min-height: 46px; display: inline-flex; align-items: center; font-weight: 600; font-size: 15px; color: var(--a-muted); border-bottom: 3px solid transparent; text-decoration: none; }
+.a-tabs a[aria-current="true"] { color: var(--a-green); border-bottom-color: var(--a-green); }
+.a-sec { padding: 20px 16px 0; display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 50px; }
+.a-block { display: flex; flex-direction: column; gap: 8px; }
+.a-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.a-h span:first-child { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--a-muted); }
+.a-h .mono { font-size: 13px; color: var(--a-muted); }
+.a-grid { border: 1px solid var(--a-line); border-radius: 10px; overflow: hidden; }
+.a-grid > * + * { border-top: 1px solid var(--a-line); }
+.a-goal { display: grid; grid-template-columns: 36px minmax(0, 1fr); }
+.a-goal .n { background: var(--a-head); border-right: 1px solid var(--a-line); display: grid; place-items: center; font-size: 13px; color: var(--a-muted); }
+.a-goal span:last-child { padding: 11px 12px; font-weight: 600; font-size: 16px; line-height: 1.35; }
+.a-task { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; min-height: 52px; cursor: pointer; }
+.a-task.static { cursor: default; }
+.a-task .cb { display: grid; place-items: center; }
+.a-task input { width: 22px; height: 22px; margin: 0; accent-color: var(--a-green); cursor: pointer; }
+.a-task .txt { padding: 10px 12px 10px 0; font-size: 16px; line-height: 1.35; }
+.a-task.done .txt { color: var(--a-done); text-decoration: line-through; }
+.a-task.next { background: var(--a-next); }
+.a-task .flag { display: block; margin-top: 4px; font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--a-orange); }
+.a-add { display: flex; }
+.a-add input { flex-grow: 1; min-width: 0; border: 0; background: var(--a-bg); color: var(--a-ink); padding: 14px; font: 16px "IBM Plex Sans", sans-serif; outline: none; }
+.a-add input:focus { background: var(--a-head); }
+.a-add button { flex: none; border: 0; border-left: 1px solid var(--a-line); background: var(--a-head); color: var(--a-green); font: 700 15px "IBM Plex Sans", sans-serif; padding: 0 16px; cursor: pointer; }
+.a-prow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; min-height: 44px; }
+.a-prow span:first-child { font-size: 15px; line-height: 1.35; }
+.a-prow.done span:first-child { color: var(--a-done); text-decoration: line-through; }
+.pill { font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 8px; border-radius: 5px; background: var(--a-chip); color: var(--a-muted); white-space: nowrap; }
+.pill.doing { background: var(--a-green-bg); color: var(--a-green); }
+.pill.blocked { background: var(--a-next); color: var(--a-orange); }
+.a-money { font-size: 15px; }
+.a-money > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 8px 12px; }
+.a-money .g { background: var(--a-head); font-weight: 700; padding: 9px 12px; }
+.a-money .g.total { background: var(--a-total); color: var(--a-total-ink); padding: 12px; }
+.a-money .i span { color: var(--a-soft); }
+.a-grid.a-money > .i + .i { border-top-color: var(--a-line2); }
+.a-fund { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.a-fund .row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.a-fund .row span:first-child { font-weight: 600; }
+.a-bar { height: 8px; border-radius: 4px; background: var(--a-chip); overflow: hidden; }
+.a-bar i { display: block; height: 100%; min-width: 4px; border-radius: 4px; background: var(--a-green); }
+.a-fund .note { font-size: 14px; color: var(--a-muted); }
+.a-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start; }
+.a-box { border: 1px solid var(--a-line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.a-box b { font-size: 14px; }
+.a-box label { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; line-height: 1.35; min-height: 28px; cursor: pointer; }
+.a-box label input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--a-green); }
+.a-box label.done span { color: var(--a-done); text-decoration: line-through; }
+.a-box .debt { font-size: 14px; font-weight: 600; }
+.a-note { border: 1px solid var(--a-line); border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 1.5; color: var(--a-soft); }
+.a-note .d, .a-log .d { font-size: 12px; font-weight: 700; color: var(--a-muted); margin-bottom: 4px; letter-spacing: .02em; }
+.a-log > div { padding: 10px 12px; font-size: 15px; line-height: 1.4; }
+.a-btn { min-height: 52px; border: 0; border-radius: 10px; background: var(--a-green); color: #fff; font: 600 16px "IBM Plex Sans", sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 18px; }
+.a-btn svg { width: 18px; height: 18px; }
+.a-btn.ghost { background: none; color: var(--a-green); border: 1px solid var(--a-line); }
+.a-actions { display: flex; flex-direction: column; gap: 8px; }
+.a-wa { align-self: flex-start; font-size: 14px; color: var(--a-muted); min-height: 40px; display: inline-flex; align-items: center; }
+.dadtag { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 4px; background: var(--a-next); color: var(--a-orange); letter-spacing: 0; }
 
-.sec { margin-top: 32px; scroll-margin-top: 70px; }
-.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.sec-h h2 { font-family: var(--display); font-weight: 800; font-size: 28px; letter-spacing: -.015em; line-height: 1.1; }
-.sec-h .small { color: var(--muted); font-size: 15px; }
-.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
-.cols3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
-@media (max-width: 859px) { .cols, .cols3 { grid-template-columns: minmax(0, 1fr); gap: 12px; } .sec { margin-top: 28px; } .sec-h h2 { font-size: 24px; } }
-
-.who-h { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-.who-h .av { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 17px; background: var(--ink); color: var(--bg); }
-.who-h.dad .av { background: var(--ball); color: #16211C; }
-.who-h h3 { font-family: var(--display); font-weight: 800; font-size: 21px; margin: 0; }
-.who-h .cnt { margin-left: auto; font-size: 15px; color: var(--muted); font-weight: 700; }
-.panel .bar { margin: 4px 0 6px; }
-.bar.green i { background: var(--done); }
-.tag.live { background: color-mix(in srgb, var(--done) 18%, transparent); color: var(--done); }
-.tag.next-t { background: var(--peach); color: #6B3300; }
-
-.fundrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px 16px; margin-bottom: 16px; }
-.fundrow .big { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; }
-.fundrow .of { color: var(--muted); font-size: 16px; }
-.fundrow .bar { grid-column: 1 / -1; height: 12px; margin: 6px 0 0; }
-.fundrow .note { grid-column: 1 / -1; color: var(--muted); font-size: 15px; }
-.panel h3.card-h { font-family: var(--display); font-weight: 800; font-size: 18px; margin: 0 0 4px; line-height: 1.25; }
-.panel .money { margin-top: 4px; font-size: 16px; }
-.panel .money td { padding: 7px 0; }
-.bigtotal { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1.1; margin: 2px 0 8px; }
-
-.debts { list-style: none; margin: 4px 0 0; padding: 0; }
-.debts li { padding: 10px 0; border-top: 1px solid var(--line); font-weight: 700; }
-.debts li:first-child { border-top: 0; }
-.logs { list-style: none; margin: 0; padding: 0; }
-.logs li { padding: 12px 0; border-top: 1px solid var(--line); }
-.logs li:first-child { border-top: 0; padding-top: 4px; }
-.logs .d { font-weight: 700; color: var(--ball-ink); font-size: 14px; }
-.logs-foot { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+/* E: Escritorio */
+.E { font-family: "Figtree", system-ui, sans-serif; color: var(--e-ink); background: var(--e-bg); max-width: 1360px; margin: 0 auto; padding: 28px 40px 0; display: flex; flex-direction: column; gap: 18px; }
+.E .serif { font-family: "Fraunces", Georgia, serif; font-weight: 700; }
+.e-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.e-top .l { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.e-top h1 { font-size: 30px; line-height: 1.1; }
+.e-top .upd { font-size: 15px; color: var(--e-muted); }
+.e-top .r { display: flex; gap: 10px; align-items: center; }
+.e-btn { min-height: 44px; padding: 0 18px; border: 0; border-radius: 12px; background: var(--e-teal); color: #fff; font: 600 15px "Figtree", sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.e-btn svg { width: 18px; height: 18px; }
+.e-btn.ghost { background: var(--e-tile); color: var(--e-ink); border: 1px solid var(--e-line); }
+.E .seg { background: var(--e-seg); border-radius: 10px; }
+.E .seg button { font-family: "Figtree", sans-serif; font-weight: 700; color: var(--e-ink); border-radius: 8px; }
+.E .seg button[aria-pressed="true"] { background: var(--e-ink); color: var(--e-bg); }
+.e-goals { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; font-size: 15px; color: var(--e-muted); }
+.e-goals b { color: var(--e-ink); font-weight: 600; }
+.e-goals .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--e-teal-bg); color: var(--e-teal); font-size: 12px; font-weight: 700; margin-right: 6px; }
+.e-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.e-tile { background: var(--e-tile); border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.e-tile .k { font-size: 13px; font-weight: 600; color: var(--e-muted); }
+.e-tile .big { font-size: 36px; line-height: 1.05; }
+.e-tile .big small { font-family: "Figtree", sans-serif; font-size: 15px; font-weight: 500; color: var(--e-muted); }
+.e-tile .s { font-size: 14px; color: var(--e-muted); }
+.e-bar { height: 8px; border-radius: 4px; background: var(--e-teal-bg); overflow: hidden; }
+.e-bar i { display: block; height: 100%; min-width: 4px; border-radius: 4px; background: var(--e-teal); }
+.e-track { display: flex; gap: 4px; }
+.e-track span { flex-grow: 1; height: 10px; border-radius: 3px; background: var(--e-empty); }
+.e-track .done { background: var(--e-done); }
+.e-track .doing { background: var(--e-teal); }
+.e-track .blocked { background: var(--e-amber-bar); }
+.e-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.e-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.e-tile h2 { font-size: 18px; font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.e-tile h2 small { font-size: 13px; font-weight: 500; color: var(--e-muted); }
+.e-task { display: flex; gap: 12px; align-items: flex-start; padding: 10px 8px; margin: 0 -8px; border-top: 1px solid var(--e-line); min-height: 44px; border-radius: 6px; cursor: pointer; }
+.e-task.static { cursor: default; }
+.e-task input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--e-teal); cursor: pointer; }
+.e-task span { font-size: 16px; line-height: 1.35; }
+.e-task.done span { color: var(--e-faded); text-decoration: line-through; }
+.e-task.next { background: var(--e-next); }
+.e-task .flag { display: block; margin-top: 3px; font-size: 12px; font-weight: 700; color: var(--e-amber); }
+.e-add { display: flex; gap: 8px; margin-top: 8px; }
+.e-add input { flex-grow: 1; min-width: 0; border: 1px dashed var(--e-muted); border-radius: 10px; padding: 11px 12px; font: 15px "Figtree", sans-serif; background: var(--e-bg); color: var(--e-ink); outline: none; }
+.e-add input:focus { border-style: solid; border-color: var(--e-teal); }
+.e-add button { border: 0; border-radius: 10px; background: var(--e-ink); color: var(--e-bg); font: 700 15px "Figtree", sans-serif; padding: 0 16px; cursor: pointer; }
+.e-prow { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--e-line); }
+.e-prow svg { flex: none; width: 18px; height: 18px; }
+.e-prow .t { font-size: 15px; line-height: 1.3; flex-grow: 1; }
+.e-prow.done .t { color: var(--e-faded); }
+.e-prow .w { font-size: 12px; font-weight: 600; flex: none; }
+.e-mrow { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; padding: 6px 0; border-top: 1px solid var(--e-line); }
+.e-mrow.total { border-top: 2px solid var(--e-ink); padding-top: 8px; font-size: 16px; font-weight: 700; }
+.e-mrow.total b { font-family: "Fraunces", Georgia, serif; font-size: 20px; }
+.e-credit label { display: flex; gap: 10px; align-items: center; font-size: 15px; min-height: 32px; cursor: pointer; }
+.e-credit label input { width: 18px; height: 18px; margin: 0; accent-color: var(--e-teal); }
+.e-credit label.done span { color: var(--e-faded); text-decoration: line-through; }
+.e-tile .muted { font-size: 15px; color: var(--e-muted); }
+.e-news .d { font-size: 13px; font-weight: 600; color: var(--e-amber); }
+.e-news .d.paul { color: var(--e-muted); }
+.e-news > div { padding: 8px 0; border-top: 1px solid var(--e-line); font-size: 15px; line-height: 1.4; }
+.e-note { font-size: 15px; line-height: 1.5; color: var(--e-ink); }
+.e-link { align-self: flex-start; background: none; border: 0; padding: 6px 0; color: var(--e-teal); font: 600 14px "Figtree", sans-serif; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
 details.more { margin-top: 32px; border-top: 1px solid var(--line); }
 details.more summary { list-style: none; cursor: pointer; min-height: 56px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 17px; }
 details.more summary::-webkit-details-marker { display: none; }
 details.more summary::after { content: "+"; font-size: 24px; color: var(--muted); }
-details.more[open] summary::after { content: "−"; }
+details.more[open] summary::after { content: "2"; }
 details.more .row { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 8px; }
+.tail { padding: 0 16px; }
+@media (min-width: 1024px) { .tail { max-width: 1360px; margin: 0 auto; padding: 0 40px; } }
 
 /* Push nudge */
 .nudge { margin-top: 24px; display: flex; align-items: center; gap: 18px; padding: 18px 22px; border-radius: 12px; background: var(--surface); border: 2px dashed var(--line); }
@@ -279,67 +387,42 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
 </div>
 
 <main id="app" hidden>
-  <div class="wrap">
-    <header class="top">
-      <span class="brand" data-t="brand">Plan de regreso</span>
-      <div class="right">
-        <span class="updated" id="updatedTop"></span>
-        <div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" lang="es">ES</button><button type="button" data-lang="en" lang="en">EN</button></div>
+  <div id="phone" class="A">
+    <header class="a-top">
+      <div class="row">
+        <span class="brand" data-t="brand">Plan de regreso</span>
+        <div class="seg" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" lang="es">ES</button><button type="button" data-lang="en" lang="en">EN</button></div>
       </div>
+      <p class="sub" id="aSub"></p>
     </header>
-
-    <section class="hello">
-      <h1 id="headline"></h1>
-      <p class="sub" id="subline"></p>
-    </section>
-
-    <section class="hero">
-      <div class="panel next" id="nextCard"></div>
-      <div class="panel"><span class="label" data-t="goals">Objetivos</span><ol class="goals" id="goals"></ol></div>
-    </section>
-
-    <nav class="jump" id="jump" aria-label="Secciones">
-      <a href="#s-tasks" data-t="secTasks">Tareas</a>
-      <a href="#s-money" data-t="secMoney">Dinero</a>
-      <a href="#s-credit" data-t="secCredit">Crédito y deudas</a>
-      <a href="#s-notes" data-t="secNotes">Notas</a>
-      <a href="#s-log" data-t="secLog">Novedades</a>
+    <nav class="a-tabs" id="aTabs" aria-label="Secciones">
+      <a href="#a-plan" data-t="tabPlan">Plan</a>
+      <a href="#a-gastos" data-t="tabGastos">Gastos</a>
+      <a href="#a-deudas" data-t="tabDeudas">Deudas</a>
+      <a href="#a-notas" data-t="tabNotas">Notas</a>
     </nav>
+    <section class="a-sec" id="a-plan"></section>
+    <section class="a-sec" id="a-gastos"></section>
+    <section class="a-sec" id="a-deudas"></section>
+    <section class="a-sec" id="a-notas" style="padding-bottom: 8px"></section>
+  </div>
 
-    <section class="sec" id="s-tasks">
-      <div class="sec-h"><h2 data-t="secTasks">Tareas</h2><span class="small" id="tasksHint"></span></div>
-      <div class="cols">
-        <div class="panel" id="dadTasks"></div>
-        <div class="panel" id="paulTasks"></div>
-      </div>
+  <div id="desk" class="E">
+    <header class="e-top">
+      <div class="l"><h1 class="serif" data-t="brand">Plan de regreso</h1><span class="upd" id="eUpd"></span></div>
+      <div class="r" id="eActs"></div>
+    </header>
+    <div class="e-goals" id="eGoals"></div>
+    <section class="e-kpis" id="eKpis"></section>
+    <section class="e-cols">
+      <div class="e-tile" id="eDad"></div>
+      <div class="e-tile" id="ePaul"></div>
+      <div class="e-stack" id="eSide"></div>
     </section>
+  </div>
 
-    <section class="sec" id="s-money">
-      <div class="sec-h"><h2 data-t="secMoney">Dinero</h2><span class="small" data-t="budgetNote"></span></div>
-      <div class="panel" id="fund" style="margin-bottom: 16px"></div>
-      <div class="cols3" id="budget"></div>
-    </section>
-
-    <section class="sec" id="s-credit">
-      <div class="sec-h"><h2 data-t="secCredit">Crédito y deudas</h2></div>
-      <div class="cols">
-        <div class="panel" id="credit"></div>
-        <div class="panel" id="debts"></div>
-      </div>
-    </section>
-
-    <section class="sec" id="s-notes">
-      <div class="sec-h"><h2 data-t="dadNotes">Notas de papá</h2></div>
-      <div id="notes"></div>
-    </section>
-
-    <section class="sec" id="s-log">
-      <div class="sec-h"><h2 data-t="secLog">Novedades</h2></div>
-      <div class="panel" id="log"></div>
-    </section>
-
+  <div class="tail">
     <section class="nudge" id="nudge" hidden></section>
-
     <details class="more">
       <summary data-t="moreT">Más del plan</summary>
       <div class="row">
@@ -347,7 +430,6 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
         <button class="btn-line" type="button" data-sheet="more" data-t="lMore">Servicios y reglas</button>
       </div>
     </details>
-
     <footer>
       <span class="sig" data-t="sig">Hecho por Paul para papá</span>
       <span id="updatedFoot"></span>
@@ -418,6 +500,12 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       nextStep: 'Tu próximo paso', allDone: 'Todo hecho. Descansa, o agrega una tarea abajo.',
       secTasks: 'Tareas', secMoney: 'Dinero', secCredit: 'Crédito y deudas', secNotes: 'Notas', secLog: 'Novedades',
       tapBox: 'Toca un cuadro para marcarlo. Paul recibe un aviso.', paulWaitsYou: 'Espera tu parte', upNext: 'Lo siguiente',
+      tabPlan: 'Plan', tabGastos: 'Gastos', tabDeudas: 'Deudas', tabNotas: 'Notas',
+      todoDad: 'To do Papá', todoPaul: 'To do Paul', nextFlag: 'SIGUIENTE', waitsFlag: 'PAUL LO ESPERA', addBtn: '+ Agregar',
+      pill: { doing: 'EN CURSO', todo: 'PENDIENTE', blocked: 'ESPERA', done: 'HECHO' },
+      word: { doing: 'En curso', todo: '', blocked: 'Espera', done: 'Hecha' },
+      aSub: (u, days, dl) => `${u} · faltan ${days} días (${dl})`, left: 'Faltan', daysN: (n) => n + ' días', until: (d) => 'hasta el ' + d,
+      tapMark: 'toca para marcar', seeDetail: 'Ver detalle', fullNote: 'Notas de papá', rebuild: 'Reconstruir el crédito',
       fundT: 'Fondo del pasaje', seeAll: 'Ver todo', noNotes: 'Todavía no hay notas.', moreT: 'Más del plan',
       nudgeT: '¿Te aviso cuando te toque?', nudgeP: 'Un aviso en tu teléfono cuando Paul te devuelva la pelota.',
       nudgeBtn: 'Sí, avísame', nudgeLater: 'Ahora no',
@@ -459,6 +547,12 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       nextStep: 'Your next step', allDone: 'All done. Rest, or add a task below.',
       secTasks: 'Tasks', secMoney: 'Money', secCredit: 'Credit and debts', secNotes: 'Notes', secLog: 'Updates',
       tapBox: 'Tap a box to tick it. Paul gets a notification.', paulWaitsYou: 'Waiting on you', upNext: 'Up next',
+      tabPlan: 'Plan', tabGastos: 'Costs', tabDeudas: 'Debts', tabNotas: 'Notes',
+      todoDad: 'Dad’s to-do', todoPaul: 'Paul’s to-do', nextFlag: 'NEXT', waitsFlag: 'PAUL IS WAITING', addBtn: '+ Add',
+      pill: { doing: 'DOING', todo: 'TO DO', blocked: 'WAITING', done: 'DONE' },
+      word: { doing: 'Doing', todo: '', blocked: 'Waiting', done: 'Done' },
+      aSub: (u, days, dl) => `${u} · ${days} days to go (${dl})`, left: 'To go', daysN: (n) => n + ' days', until: (d) => 'until ' + d,
+      tapMark: 'tap to tick', seeDetail: 'See details', fullNote: 'Dad’s notes', rebuild: 'Rebuild credit',
       fundT: 'Ticket fund', seeAll: 'See all', noNotes: 'No notes yet.', moreT: 'More of the plan',
       nudgeT: 'Want a nudge when it is your turn?', nudgeP: 'A notification on your phone when Paul sends the ball back.',
       nudgeBtn: 'Yes, notify me', nudgeLater: 'Not now',
@@ -563,117 +657,142 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   const nextOf = (list) => list.find((x) => x.status === 'doing') || list.find((x) => x.status === 'todo');
 
   // ---------- render ----------
-  // One page, in the order of the sheet: goals, both task columns, money,
-  // credit and debts, Dad's notes, updates.
-  const doneFirstLast = (list) => [...list.filter((x) => x.status !== 'done'), ...list.filter((x) => x.status === 'done')];
-
-  function checklist(list, kind, editable, next) {
-    return el('ul', { class: 'list' }, doneFirstLast(list).map((x) => {
-      const done = x.status === 'done';
-      return el('li', { class: x.status + (x === next ? ' next' : '') },
-        editable
-          ? el('button', { class: 'box', type: 'button', role: 'checkbox', 'aria-checked': String(done), 'aria-label': tr(x.text), [done ? 'data-undo' : 'data-done']: taskKey(x), 'data-kind': kind }, done ? check() : null)
-          : el('span', { class: 'box', 'aria-hidden': 'true' }, done ? check() : null),
-        el('div', null,
-          el('div', { class: 't' }, tr(x.text)),
-          x === next && kind === 'task' ? el('span', { class: 'tag next-t' }, S('nextStep')) : null,
-          x.status === 'doing' ? el('span', { class: 'tag live' }, tr(x.note) || S('paulNow')) : null,
-          x.status === 'blocked' ? el('span', { class: 'tag' }, tr(x.note) || S('paulWaitsYou')) : null,
-          x.paulWaits && !done ? el('span', { class: 'tag' }, S('paulWaits')) : null,
-        ));
-    }));
-  }
-
-  function whoHead(cls, initial, name, list) {
-    const n = list.filter((x) => x.status === 'done').length;
-    const bar = el('div', { class: 'bar green', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': list.length, 'aria-valuenow': n, 'aria-label': name }, el('i'));
-    bar.firstChild.style.width = (list.length ? (n / list.length) * 100 : 0) + '%';
-    return [el('div', { class: 'who-h ' + cls }, el('span', { class: 'av', 'aria-hidden': 'true' }, initial), el('h3', null, name), el('span', { class: 'cnt' }, S('doneOf')(n, list.length))), bar];
-  }
-
+  // The same plan drawn twice: A "La hoja" for phones (the sheet, cleaned up) and
+  // E "Escritorio" for a computer (everything on one screen). CSS shows one.
+  const doneLast = (list) => [...list.filter((x) => x.status !== 'done'), ...list.filter((x) => x.status === 'done')];
   const longDay = (s) => cap(fmtDay(s, { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
+  const shortDay = (s) => fmtDay(s, { day: 'numeric', month: 'short' }).replace('.', '');
+  const doneOf = (l) => l.filter((x) => x.status === 'done').length;
+
+  // A checkbox that saves on click when Dad can edit, else a plain box
+  function tick(x, kind, edit) {
+    const done = x.status === 'done';
+    return el('input', { type: 'checkbox', checked: done ? '' : null, disabled: edit ? null : '', 'aria-label': tr(x.text),
+      [done ? 'data-undo' : 'data-done']: edit ? taskKey(x) : null, 'data-kind': kind });
+  }
+  function addForm(cls) {
+    return el('form', { class: cls + ' add-form' },
+      el('input', { type: 'text', placeholder: S('addPh'), 'aria-label': S('addPh'), maxlength: 200, enterkeyhint: 'done' }),
+      el('button', { type: 'submit' }, S('add')));
+  }
+  const flags = (x, next, cls) => (x === next || (x.paulWaits && x.status !== 'done'))
+    ? el('span', { class: cls }, [x === next ? S('nextFlag') : null, x.paulWaits && x.status !== 'done' ? S('waitsFlag') : null].filter(Boolean).join(' · ')) : null;
+  const stateIcon = (st) => {
+    const c = { doing: ['var(--e-teal)', 'var(--e-teal-bg)', ''], blocked: ['var(--e-amber)', 'none', '3 2'], done: ['var(--e-done)', 'var(--e-done)', ''], todo: ['var(--e-faded)', 'none', ''] }[st] || ['var(--e-faded)', 'none', ''];
+    return svg(`<circle cx="9" cy="9" r="7" fill="${c[1]}" stroke="${c[0]}" stroke-width="2" ${c[2] ? 'stroke-dasharray="' + c[2] + '"' : ''}/>` + (st === 'done' ? '<path d="M5.5 9.2l2.3 2.2 4.4-4.6" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' : ''), '0 0 18 18');
+  };
 
   function render(d) {
     const t = today();
     const mine = d.tasks.eduardo, pauls = d.tasks.paul;
     const next = nextOf(mine);
     const edit = canEdit();
-
+    const days = daysUntil(d.deadline, t);
+    const dl = fmtDay(d.deadline, { day: 'numeric', month: 'short' }).replace('.', '');
     const upd = S('updated')(fmtDay(d.updated));
-    $('updatedTop').textContent = upd;
     $('updatedFoot').textContent = upd;
-    $('headline').textContent = S('hi');
-    const todayTxt = cap(t.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
-    $('subline').textContent = S('subOv')(todayTxt, daysUntil(d.deadline, t), fmtDay(d.deadline, { day: 'numeric', month: 'long' }));
-
-    // Next step
-    const wa = next && d.contact && d.contact.whatsapp
-      ? 'https://wa.me/' + d.contact.whatsapp + '?text=' + encodeURIComponent(S('wa')(tr(next.text))) : null;
-    $('nextCard').replaceChildren(...(next ? [
-      el('span', { class: 'label' }, S('nextStep')),
-      el('p', { class: 'step' }, tr(next.text)),
-      next.paulWaits ? el('span', { class: 'tag' }, S('paulWaits')) : null,
-      edit ? el('button', { class: 'btn-ball', type: 'button', 'data-done': taskKey(next), 'data-kind': 'task' }, check(), S('markDone'))
-        : wa ? el('a', { class: 'btn-ball', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('tellPaul')) : null,
-      edit && wa ? el('a', { class: 'wa-link', href: wa, target: '_blank', rel: 'noopener' }, chat(), S('waPaul')) : null,
-    ] : [el('span', { class: 'label' }, S('nextStep')), el('p', { class: 'step' }, S('allDone'))]).filter(Boolean));
-
-    const goals = d.objectives || [];
-    $('goals').replaceChildren(...goals.map((g, i) => el('li', null, el('span', { class: 'n', 'aria-hidden': 'true' }, i + 1), tr(g))));
-
-    // Tasks, side by side like the sheet
-    $('tasksHint').textContent = edit ? S('tapBox') : '';
-    $('dadTasks').replaceChildren(
-      ...whoHead('dad', 'E', S('dadShort'), mine),
-      checklist(mine, 'task', edit, next),
-      edit ? el('form', { class: 'addrow', id: 'addForm' },
-        el('input', { id: 'addText', type: 'text', placeholder: S('addPh'), 'aria-label': S('addPh'), maxlength: 200, enterkeyhint: 'done' }),
-        el('button', { type: 'submit' }, S('add'))) : null,
-    );
-    $('paulTasks').replaceChildren(...whoHead('paul', 'P', 'Paul', pauls), checklist(pauls, 'paul', false, null));
-
-    // Money
     const f = d.fund;
     const pct = f.target ? Math.min(100, (f.saved / f.target) * 100) : 0;
-    const bar = el('div', { class: 'bar', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': f.target, 'aria-valuenow': f.saved, 'aria-label': S('fundT') }, el('i'));
-    bar.firstChild.style.width = pct + '%';
-    $('fund').replaceChildren(el('div', { class: 'fundrow' },
-      el('span', null, el('span', { class: 'label', style: 'display:block;color:var(--muted);margin-bottom:6px' }, S('fundT')), el('span', { class: 'big' }, money(f.saved))),
-      el('span', { class: 'of' }, S('of') + money(f.target)),
-      bar,
-      f.note ? el('p', { class: 'note' }, tr(f.note)) : null,
-    ));
+    const bar = (cls) => { const b = el('div', { class: cls, role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': f.target, 'aria-valuenow': f.saved, 'aria-label': S('fundT') }, el('i')); b.firstChild.style.width = pct + '%'; return b; };
     const groups = (d.budget && d.budget.groups) || [];
-    $('s-money').querySelector('.sec-h .small').hidden = !groups.length;
-    $('budget').replaceChildren(...groups.map((g) => el('div', { class: 'panel' },
-      el('h3', { class: 'card-h' }, tr(g.title)),
-      g.total != null ? el('div', { class: 'bigtotal' }, money(g.total)) : null,
-      el('table', { class: 'money' }, el('tbody', null, g.items.map(([label, n]) => el('tr', null, el('td', null, tr(label)), el('td', null, money(n)))))),
-    )));
-
-    // Credit and debts
-    $('s-credit').hidden = !d.credit;
-    if (d.credit) {
-      $('credit').replaceChildren(el('h3', { class: 'card-h' }, S('credit')), checklist(d.credit.steps || [], 'credit', edit, null));
-      $('debts').replaceChildren(el('h3', { class: 'card-h' }, S('debts')), el('ul', { class: 'debts' }, (d.credit.debts || []).map((x) => el('li', null, tr(x)))));
-    }
-
-    // Dad's notes
+    const credit = d.credit || { steps: [], debts: [] };
     const notes = d.dadNotes || [];
-    $('notes').replaceChildren(...(notes.length ? notes.map((n) => el('div', { class: 'note-card' },
-      n.date ? el('div', { class: 'd' }, longDay(n.date)) : null, el('p', null, tr(n.text)))) : [el('p', { class: 'small' }, S('noNotes'))]));
-
-    // Updates: newest few, the rest in a sheet
     const logs = [...d.log].sort((a, b) => b.date.localeCompare(a.date));
-    $('log').replaceChildren(
-      el('ol', { class: 'logs' }, logs.slice(0, 4).map((x) => el('li', null,
-        el('div', { class: 'd' }, longDay(x.date), x.by === 'eduardo' ? el('span', { class: 'by' }, S('byDad')) : null),
-        el('p', null, tr(x.text))))),
-      el('div', { class: 'logs-foot' },
-        edit ? el('button', { class: 'btn-ball', type: 'button', 'data-sheet': 'write' }, pencil(), S('writeBtn')) : null,
-        logs.length > 4 ? el('button', { class: 'btn-line', type: 'button', 'data-sheet': 'log' }, S('seeAll') + ' (' + logs.length + ')') : null),
+    const wa = d.contact && d.contact.whatsapp ? 'https://wa.me/' + d.contact.whatsapp : null;
+    const writeBtn = (cls) => edit ? el('button', { class: cls, type: 'button', 'data-sheet': 'write' }, pencil(), S('writeBtn')) : null;
+
+    // ----- A: La hoja -----
+    $('aSub').replaceChildren(S('aSub')(upd, days, dl));
+    $('a-plan').replaceChildren(
+      el('div', { class: 'a-block' },
+        el('div', { class: 'a-h' }, el('span', null, S('goals'))),
+        el('div', { class: 'a-grid' }, (d.objectives || []).map((g, i) => el('div', { class: 'a-goal' }, el('span', { class: 'n mono' }, i + 1), el('span', null, tr(g)))))),
+      el('div', { class: 'a-block' },
+        el('div', { class: 'a-h' }, el('span', null, S('todoDad')), el('span', { class: 'mono' }, doneOf(mine) + ' / ' + mine.length)),
+        el('div', { class: 'a-grid' },
+          doneLast(mine).map((x) => el('label', { class: 'a-task ' + x.status + (x === next ? ' next' : '') + (edit ? '' : ' static') },
+            el('span', { class: 'cb' }, tick(x, 'task', edit)),
+            el('span', { class: 'txt' }, tr(x.text), flags(x, next, 'flag')))),
+          edit ? addForm('a-add') : null)),
+      el('div', { class: 'a-block' },
+        el('div', { class: 'a-h' }, el('span', null, S('todoPaul')), el('span', { class: 'mono' }, doneOf(pauls) + ' / ' + pauls.length)),
+        el('div', { class: 'a-grid' }, doneLast(pauls).map((x) => el('div', { class: 'a-prow ' + x.status },
+          el('span', null, tr(x.text)), el('span', { class: 'pill ' + x.status }, S('pill')[x.status] || x.status))))),
+    );
+    $('a-gastos').replaceChildren(el('div', { class: 'a-block' },
+      el('div', { class: 'a-h' }, el('span', null, S('tabGastos'))),
+      groups.length ? el('div', { class: 'a-grid a-money' }, groups.map((g, gi) => [
+        el('div', { class: 'g' + (gi === groups.length - 1 ? ' total' : '') }, el('span', null, tr(g.title)), el('span', { class: 'mono' }, g.total != null ? money(g.total) : '')),
+        ...(gi === groups.length - 1 ? [] : g.items.map(([label, n]) => el('div', { class: 'i' }, el('span', null, tr(label)), el('span', { class: 'mono' }, money(n))))),
+      ]).flat()) : null,
+      el('div', { class: 'a-fund' },
+        el('div', { class: 'row' }, el('span', null, S('fundT')), el('span', { class: 'mono' }, money(f.saved) + ' / ' + money(f.target))),
+        bar('a-bar'),
+        f.note ? el('p', { class: 'note' }, tr(f.note)) : null),
+    ));
+    $('a-deudas').replaceChildren(el('div', { class: 'a-block' },
+      el('div', { class: 'a-h' }, el('span', null, S('secCredit'))),
+      el('div', { class: 'a-two' },
+        el('div', { class: 'a-box' }, el('b', null, S('rebuild')), (credit.steps || []).map((x) => el('label', { class: x.status }, tick(x, 'credit', edit), el('span', null, tr(x.text))))),
+        el('div', { class: 'a-box' }, el('b', null, S('debts')), (credit.debts || []).map((x) => el('span', { class: 'debt' }, tr(x))))),
+    ));
+    $('a-notas').replaceChildren(
+      el('div', { class: 'a-block' },
+        el('div', { class: 'a-h' }, el('span', null, S('fullNote'))),
+        ...(notes.length ? notes.map((n) => el('div', { class: 'a-note' }, n.date ? el('div', { class: 'd' }, longDay(n.date)) : null, tr(n.text))) : [el('div', { class: 'a-note' }, S('noNotes'))])),
+      el('div', { class: 'a-block' },
+        el('div', { class: 'a-h' }, el('span', null, S('secLog')), logs.length > 4 ? el('button', { class: 'e-link', type: 'button', 'data-sheet': 'log', style: 'color:var(--a-green)' }, S('seeAll') + ' (' + logs.length + ')') : null),
+        el('div', { class: 'a-grid a-log' }, logs.slice(0, 4).map((x) => el('div', null,
+          el('div', { class: 'd' }, longDay(x.date), x.by === 'eduardo' ? el('span', { class: 'dadtag' }, S('byDad')) : null), tr(x.text)))),
+        el('div', { class: 'a-actions' }, writeBtn('a-btn'), wa ? el('a', { class: 'a-wa', href: wa, target: '_blank', rel: 'noopener' }, S('waPaul')) : null)),
     );
 
+    // ----- E: Escritorio -----
+    $('eUpd').textContent = upd;
+    $('eActs').replaceChildren(...[
+      writeBtn('e-btn'),
+      wa ? el('a', { class: 'e-btn ghost', href: wa, target: '_blank', rel: 'noopener' }, chat(), 'WhatsApp') : null,
+      el('div', { class: 'seg', role: 'group', 'aria-label': 'Idioma / Language' },
+        ['es', 'en'].map((l) => el('button', { type: 'button', 'data-lang': l, lang: l, 'aria-pressed': String(l === lang) }, l.toUpperCase()))),
+    ].filter(Boolean));
+    $('eGoals').replaceChildren(el('span', null, S('goals') + ':'), ...(d.objectives || []).map((g, i) => el('span', null, el('span', { class: 'n' }, i + 1), el('b', null, tr(g)))));
+    const track = (list) => el('div', { class: 'e-track', 'aria-hidden': 'true' }, list.map((x) => el('span', { class: x.status })));
+    $('eKpis').replaceChildren(
+      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('left')), el('span', { class: 'big serif' }, S('daysN')(days)), el('span', { class: 's' }, S('until')(fmtDay(d.deadline, { day: 'numeric', month: 'long' })))),
+      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('fundT')), el('span', { class: 'big serif' }, money(f.saved), ' ', el('small', null, S('of') + money(f.target))), bar('e-bar')),
+      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('dadShort')), el('span', { class: 'big serif' }, S('doneOf')(doneOf(mine), mine.length).replace(/ (hechas|done)$/, '')), track(mine)),
+      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, 'Paul'), el('span', { class: 'big serif' }, S('doneOf')(doneOf(pauls), pauls.length).replace(/ (hechas|done)$/, '')), track(pauls)),
+    );
+    $('eDad').replaceChildren(
+      el('h2', null, S('todoDad'), edit ? el('small', null, S('tapMark')) : null),
+      ...doneLast(mine).map((x) => el('label', { class: 'e-task ' + x.status + (x === next ? ' next' : '') + (edit ? '' : ' static') },
+        tick(x, 'task', edit), el('span', null, tr(x.text), flags(x, next, 'flag')))),
+      edit ? addForm('e-add') : null,
+    );
+    const wordColor = { doing: 'var(--e-teal)', blocked: 'var(--e-amber)', done: 'var(--e-done)', todo: 'var(--e-muted)' };
+    $('ePaul').replaceChildren(
+      el('h2', null, S('todoPaul')),
+      ...doneLast(pauls).map((x) => { const w = el('span', { class: 'w' }, S('word')[x.status] || ''); w.style.color = wordColor[x.status] || ''; return el('div', { class: 'e-prow ' + x.status }, stateIcon(x.status), el('span', { class: 't' }, tr(x.text)), w); }),
+    );
+    $('eSide').replaceChildren(
+      el('div', { class: 'e-tile' },
+        el('h2', null, S('tabGastos')),
+        ...groups.map((g, gi) => gi === groups.length - 1
+          ? [...g.items.map(([label, n]) => el('div', { class: 'e-mrow' }, el('span', null, tr(label)), el('b', null, money(n)))),
+             el('div', { class: 'e-mrow total' }, el('span', null, S('total')), el('b', null, money(g.total)))]
+          : el('div', { class: 'e-mrow' }, el('span', null, tr(g.title)), el('b', null, money(g.total)))).flat(),
+        groups.length ? el('button', { class: 'e-link', type: 'button', 'data-sheet': 'money' }, S('seeDetail')) : null),
+      el('div', { class: 'e-tile e-credit' },
+        el('h2', null, S('secCredit')),
+        ...(credit.steps || []).map((x) => el('label', { class: x.status }, tick(x, 'credit', edit), el('span', null, tr(x.text)))),
+        (credit.debts || []).length ? el('p', { class: 'muted' }, S('debts') + ': ' + credit.debts.map(tr).join(', ')) : null),
+      notes.length ? el('div', { class: 'e-tile' }, el('h2', null, S('fullNote')), ...notes.map((n) => el('p', { class: 'e-note' }, tr(n.text)))) : null,
+      el('div', { class: 'e-tile e-news' },
+        el('h2', null, S('secLog'), logs.length > 3 ? el('button', { class: 'e-link', type: 'button', 'data-sheet': 'log' }, S('seeAll') + ' (' + logs.length + ')') : null),
+        ...logs.slice(0, 3).map((x) => el('div', null, el('span', { class: 'd' + (x.by === 'eduardo' ? '' : ' paul') }, (x.by === 'eduardo' ? S('byDad') : 'Paul') + ' · ' + shortDay(x.date)), el('br'), tr(x.text)))),
+    );
+
+    document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     if (sheetKind && sheetKind !== 'write' && $('sheet').open) fillSheet(sheetKind);
   }
 
@@ -785,8 +904,17 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
     if (kind === 'write') setTimeout(() => $('writeText') && $('writeText').focus(), 60);
   }
 
-  const jumpLine = () => { const j = $('jump'); if (j) j.classList.toggle('stuck', j.getBoundingClientRect().top <= 0 && scrollY > 0); };
-  addEventListener('scroll', jumpLine, { passive: true });
+  // Phone tabs follow the scroll: the last section whose top has passed the tab bar.
+  const tabNow = () => {
+    const tabs = [...document.querySelectorAll('#aTabs a')];
+    if (!tabs.length || $('phone').offsetParent === null) return;
+    let cur = tabs[0];
+    for (const a of tabs) { const sec = document.querySelector(a.getAttribute('href')); if (sec && sec.getBoundingClientRect().top < 120) cur = a; }
+    if (innerHeight + scrollY >= document.body.scrollHeight - 4) cur = tabs[tabs.length - 1];
+    tabs.forEach((a) => a.setAttribute('aria-current', String(a === cur)));
+  };
+  addEventListener('scroll', tabNow, { passive: true });
+  addEventListener('resize', tabNow);
 
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-sheet]');
@@ -814,16 +942,18 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
     if (data) { render(data); renderPush(); }
   }
 
-  document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => {
-    if (b.dataset.lang === lang) return;
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lang]');
+    if (!b || b.dataset.lang === lang) return;
     lang = b.dataset.lang;
     store.set(lang, LANG_KEY);
     applyLang();
     if (pushState === 'on') currentSub().then((sub) => sub && sendSub(sub)).catch(() => {});
-  }));
+  });
   applyLang();
 
   function showGate(errK) {
+    document.body.classList.remove('in');
     $('app').hidden = true;
     $('gate').hidden = false;
     setErr(errK);
@@ -838,6 +968,8 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
     render(d);
     $('gate').hidden = true;
     $('app').hidden = false;
+    document.body.classList.add('in');
+    tabNow();
     checkPush();
     return d;
   }
@@ -886,7 +1018,7 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   }
 
   async function commit(kind, mutate) {
-    if (busy || !canEdit()) return false;
+    if (busy || !canEdit()) { if (data) render(data); return false; }
     busy = true;
     toast(S('saving'));
     try {
@@ -915,6 +1047,7 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       throw new Error('conflict');
     } catch {
       toast(S('saveFail'), true);
+      if (data) render(data);
       return false;
     } finally { busy = false; }
   }
@@ -934,15 +1067,16 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   });
 
   document.addEventListener('submit', async (e) => {
-    if (e.target.id === 'addForm') {
+    if (e.target.classList.contains('add-form') || e.target.id === 'addForm') {
       e.preventDefault();
-      const t = $('addText').value.trim();
+      const input = e.target.querySelector('input');
+      const t = input.value.trim();
       if (!t) return;
       const ok = await commit('add', (p) => {
         p.tasks.eduardo.push({ status: 'todo', text: { es: t, en: t }, by: 'eduardo' });
         p.log.push({ date: isoToday(), by: 'eduardo', text: logText('logAdd', t) });
       });
-      if (ok && $('addText')) $('addText').value = '';
+      if (ok) document.querySelectorAll('.add-form input').forEach((i) => { i.value = ''; });
     } else if (e.target.id === 'writeForm') {
       e.preventDefault();
       const t = $('writeText').value.trim();
