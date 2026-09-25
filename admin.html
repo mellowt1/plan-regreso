@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Plan de regreso · edit</title>
+<meta name="theme-color" content="#1F6B4F">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root {
+  --bg: #F2F0EA; --surface: #FFFFFF; --ink: #16211C; --muted: #56605A; --line: #DAD6CB; --chip: #E2DFD5;
+  --table: #1F6B4F; --ball: #FF7A1A; --ball-ink: #B24D00; --wait-ink: #7A4D0E; --wait-bg: #F7E8CC; --done: #2F6B4A; --err: #A1261B;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #101512; --surface: #1A221E; --ink: #E9EEE9; --muted: #A5B0A9; --line: #2B3530; --chip: #222B26;
+    --table: #1B5A43; --ball-ink: #FF9A4D; --wait-ink: #F0C47A; --wait-bg: #3A2E18; --done: #6CC18D; --err: #FF8A7A; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.45 var(--body); }
+h1, h2, h3, p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+.top { background: var(--table); color: #fff; padding: calc(16px + env(safe-area-inset-top)) 0 18px; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.top h1 { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -.01em; }
+.top a { color: #CFE8DC; font-weight: 700; font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
+
+.gate { max-width: 420px; margin: 48px auto; padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+.gate h2 { font-family: var(--display); font-weight: 800; font-size: 32px; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 15px; }
+input[type=password], input[type=text], input[type=number], input[type=date], textarea {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); outline: none; font-weight: 400; font-size: 16px;
+}
+input:focus, textarea:focus { border-color: var(--table); box-shadow: 0 0 0 3px color-mix(in srgb, var(--table) 25%, transparent); }
+textarea { resize: vertical; min-height: 64px; line-height: 1.4; }
+.btn { min-height: 50px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 700; cursor: pointer; }
+.btn.ball { background: var(--ball); color: #16211C; }
+.btn.ghost { background: var(--chip); color: var(--ink); }
+.btn:disabled { opacity: .5; cursor: default; }
+.msg { min-height: 1.4em; font-weight: 700; color: var(--err); }
+
+section.card { background: var(--surface); border-radius: 14px; padding: 18px; margin-top: 16px; }
+section.card > h2 { font-family: var(--display); font-weight: 800; font-size: 22px; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+section.card > h2 small { font-family: var(--body); font-weight: 400; font-size: 14px; color: var(--muted); }
+.hint { color: var(--muted); font-size: 15px; margin-top: 4px; }
+
+.task { border-top: 1px solid var(--line); padding: 14px 0; display: flex; flex-direction: column; gap: 10px; }
+.task:first-of-type { border-top: 0; }
+.task .t { font-weight: 700; line-height: 1.35; }
+.task .t.empty { color: var(--muted); font-weight: 400; font-style: italic; }
+.task .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--chip); }
+.seg button { border: 0; background: none; min-height: 38px; padding: 0 12px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg button[data-s="doing"][aria-pressed="true"] { background: var(--table); color: #fff; }
+.seg button[data-s="blocked"][aria-pressed="true"] { background: var(--wait-bg); color: var(--wait-ink); }
+.seg button[data-s="done"][aria-pressed="true"] { background: var(--done); color: #fff; }
+.editbtn { margin-left: auto; min-height: 38px; padding: 0 12px; border: 1.5px solid var(--line); border-radius: 999px; background: none; font-weight: 700; font-size: 14px; cursor: pointer; }
+.edit { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 12px; background: var(--bg); }
+.edit .tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.icon { min-width: 44px; min-height: 44px; border: 0; border-radius: 12px; background: var(--chip); cursor: pointer; font-weight: 700; }
+.icon.del { color: var(--err); margin-left: auto; padding: 0 14px; }
+.check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 700; font-size: 15px; cursor: pointer; }
+.check input { width: 22px; height: 22px; accent-color: var(--table); }
+.tag { font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--wait-bg); color: var(--wait-ink); }
+.ballmark { width: 14px; height: 14px; border-radius: 50%; background: var(--ball); display: inline-block; vertical-align: -1px; margin-right: 6px; }
+.add { margin-top: 10px; min-height: 48px; width: 100%; border: 2px dashed var(--line); border-radius: 12px; background: none; font-weight: 700; cursor: pointer; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 520px) { .two { grid-template-columns: 1fr; } }
+.logrow { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); align-items: flex-start; }
+.logrow:first-child { border-top: 0; }
+.logrow .d { flex: none; width: 64px; font-weight: 700; font-size: 14px; color: var(--ball-ink); }
+.logrow p { flex-grow: 1; }
+.logrow .en { color: var(--muted); font-size: 15px; }
+
+.savebar { position: sticky; bottom: 0; z-index: 5; margin-top: 24px; background: var(--ink); color: var(--bg); padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
+.savebar .wrap { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 0; }
+.savebar .state { flex-grow: 1; font-size: 15px; min-width: 150px; }
+.savebar .check { color: var(--bg); }
+.savebar .check input { accent-color: var(--ball); }
+.pad-bottom { height: 24px; }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap"><h1>Plan de regreso · edit</h1><a href="./" target="_blank" rel="noopener">Open Dad's page ↗</a></div></header>
+
+<form class="gate" id="gate" autocomplete="off" hidden>
+  <h2>Sign in</h2>
+  <p class="hint">Dad's PIN decrypts the plan on this phone. The admin token lets you save. Both stay on this device.</p>
+  <label class="f">PIN<input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off"></label>
+  <label class="f">Admin token<input id="token" type="password" autocomplete="off" spellcheck="false"></label>
+  <button class="btn" id="enter" type="submit">Open</button>
+  <div class="msg" id="gateMsg" role="alert"></div>
+</form>
+
+<main id="app" hidden>
+  <div class="wrap">
+    <section class="card">
+      <h2>Dad's side <small id="dadCount"></small></h2>
+      <p class="hint"><span class="ballmark" aria-hidden="true"></span>The first task that is Doing or To do gets the ball. Move tasks to change the order.</p>
+      <div id="dadList"></div>
+      <button class="add" type="button" data-add="eduardo">+ Add a task for Dad</button>
+    </section>
+
+    <section class="card">
+      <h2>Your side <small id="paulCount"></small></h2>
+      <p class="hint">Set one to Doing and Dad sees “En eso ahora ●●●”. Waiting means it waits on Dad.</p>
+      <div id="paulList"></div>
+      <button class="add" type="button" data-add="paul">+ Add a task for you</button>
+    </section>
+
+    <section class="card">
+      <h2>Money and goal</h2>
+      <div class="two" style="margin-top: 12px">
+        <label class="f">Ticket fund saved ($)<input id="saved" type="number" min="0" step="1" inputmode="numeric"></label>
+        <label class="f">Target ($)<input id="target" type="number" min="0" step="1" inputmode="numeric"></label>
+      </div>
+      <div class="row" style="display: flex; gap: 8px; align-items: flex-end; margin-top: 12px">
+        <label class="f" style="flex-grow: 1">Money came in ($)<input id="inAmt" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 150"></label>
+        <button class="btn ghost" type="button" id="inAdd">Add to fund</button>
+      </div>
+      <p class="hint">Adds it to the fund and writes a line in the log.</p>
+      <div class="two" style="margin-top: 16px">
+        <label class="f">Goal right now (ES)<textarea id="goalEs" rows="2"></textarea></label>
+        <label class="f">Goal right now (EN)<textarea id="goalEn" rows="2"></textarea></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Log</h2>
+      <div class="two" style="margin-top: 12px">
+        <label class="f">Date<input id="logDate" type="date"></label>
+        <span></span>
+        <label class="f">What happened (ES)<textarea id="logEs" rows="3" placeholder="Llamada con papá..."></textarea></label>
+        <label class="f">English<textarea id="logEn" rows="3" placeholder="Optional"></textarea></label>
+      </div>
+      <button class="btn ghost" type="button" id="logAdd" style="margin-top: 12px">Add to log</button>
+      <div id="logList" style="margin-top: 12px"></div>
+    </section>
+
+    <section class="card">
+      <h2>Service prices</h2>
+      <p class="hint">Leave empty for “Precio por definir”.</p>
+      <div id="prices" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px"></div>
+    </section>
+
+    <section class="card">
+      <h2>Notifications</h2>
+      <p class="hint" id="pushInfo">Dad turns them on from his page. A test goes to every phone that did.</p>
+      <button class="btn ghost" type="button" id="testPush" style="margin-top: 12px">Send a test notification</button>
+      <p class="hint" id="testMsg" role="status"></p>
+    </section>
+    <div class="pad-bottom"></div>
+  </div>
+
+  <div class="savebar">
+    <div class="wrap">
+      <span class="state" id="state" role="status">No changes</span>
+      <label class="check"><input type="checkbox" id="notify"> Notify Dad</label>
+      <button class="btn ball" type="button" id="save" disabled>Save</button>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const API = 'https://plan-regreso.paul-o-a04.workers.dev';
+  const PIN_KEY = 'plan-regreso-pin';
+  const TOKEN_KEY = 'plan-regreso-admin';
+  const ITER = 200000;
+  const $ = (id) => document.getElementById(id);
+  const enc = new TextEncoder();
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+
+  // ---------- crypto, same scheme as build.mjs and index.html ----------
+  const b64 = (buf) => { let s = ''; new Uint8Array(buf).forEach((c) => { s += String.fromCharCode(c); }); return btoa(s); };
+  const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  async function keyFor(pin, salt, iter) {
+    const base = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: iter }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+  async function decrypt(pin, blob) {
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(blob.iv) }, await keyFor(pin, unb64(blob.salt), blob.iter), unb64(blob.ct));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+  async function encrypt(pin, obj) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await keyFor(pin, salt, ITER), enc.encode(JSON.stringify(obj)));
+    return { v: 1, iter: ITER, salt: b64(salt), iv: b64(iv), ct: b64(ct) };
+  }
+
+  // ---------- helpers ----------
+  function el(tag, attrs, ...kids) {
+    const n = document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') n.className = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else if (k === 'value') n.value = v;
+      else if (k === 'checked') n.checked = !!v;
+      else n.setAttribute(k, v === true ? '' : v);
+    }
+    for (const k of kids.flat()) if (k != null && k !== false) n.append(k.nodeType ? k : String(k));
+    return n;
+  }
+  const pad = (n) => String(n).padStart(2, '0');
+  const todayIso = () => { const t = new Date(); return `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`; };
+  const bi = (v) => (v && typeof v === 'object') ? v : { es: v || '', en: '' };
+  const clone = (o) => JSON.parse(JSON.stringify(o));
+  const nextOf = (list) => list.find((x) => x.status === 'doing') || list.find((x) => x.status === 'todo');
+  const shortDate = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); };
+
+  // ---------- state ----------
+  let pin = '', token = '', rev = 0;
+  let plan = null, orig = null;
+  let notifyTouched = false;
+  const openRows = new WeakSet();
+
+  const STATUSES = [['todo', 'To do'], ['doing', 'Doing'], ['blocked', 'Waiting'], ['done', 'Done']];
+
+  function taskRow(who, x, i, list) {
+    const t = bi(x.text);
+    const isNext = who === 'eduardo' && x === nextOf(list);
+    const seg = el('div', { class: 'seg', role: 'group', 'aria-label': 'Status' }, STATUSES.map(([s, label]) =>
+      el('button', { type: 'button', 'data-s': s, 'aria-pressed': String(x.status === s), onclick: () => { x.status = s; renderLists(); changed(); } }, label)));
+    const open = openRows.has(x);
+    const row = el('div', { class: 'task' },
+      el('div', { class: 't' + (t.es ? '' : ' empty') }, isNext ? el('span', { class: 'ballmark', 'aria-label': 'Has the ball' }) : null, t.es || 'New task, tap Edit'),
+      (x.paulWaits && x.status !== 'done') ? el('span', { class: 'tag', style: 'align-self:flex-start' }, 'Paul lo espera') : null,
+      el('div', { class: 'row' }, seg,
+        el('button', { class: 'editbtn', type: 'button', 'aria-expanded': String(open), onclick: () => { open ? openRows.delete(x) : openRows.add(x); renderLists(); } }, open ? 'Close' : 'Edit')),
+    );
+    if (open) {
+      const txt = (lang, labelText) => el('label', { class: 'f' }, labelText,
+        el('textarea', { rows: 2, value: t[lang], placeholder: lang === 'en' ? 'Optional' : '', oninput: (e) => { x.text = { ...bi(x.text), [lang]: e.target.value }; if (lang === 'es') row.querySelector('.t').lastChild.textContent = e.target.value || 'New task, tap Edit'; changed(); } }));
+      const box = el('div', { class: 'edit' }, txt('es', 'Spanish'), txt('en', 'English'));
+      if (who === 'eduardo') {
+        box.append(el('label', { class: 'check' }, el('input', { type: 'checkbox', checked: !!x.paulWaits, onchange: (e) => { if (e.target.checked) x.paulWaits = true; else delete x.paulWaits; renderLists(); changed(); } }), 'Paul waits on this'));
+      } else {
+        const n = bi(x.note);
+        box.append(el('div', { class: 'two' },
+          el('label', { class: 'f' }, 'Waiting note (ES)', el('input', { type: 'text', value: n.es, placeholder: 'Espera tus precios', oninput: (e) => { x.note = { ...bi(x.note), es: e.target.value }; changed(); } })),
+          el('label', { class: 'f' }, 'Waiting note (EN)', el('input', { type: 'text', value: n.en, placeholder: 'Optional', oninput: (e) => { x.note = { ...bi(x.note), en: e.target.value }; changed(); } })),
+        ));
+      }
+      box.append(el('div', { class: 'tools' },
+        el('button', { class: 'icon', type: 'button', 'aria-label': 'Move up', disabled: i === 0, onclick: () => { list.splice(i - 1, 0, list.splice(i, 1)[0]); renderLists(); changed(); } }, '↑'),
+        el('button', { class: 'icon', type: 'button', 'aria-label': 'Move down', disabled: i === list.length - 1, onclick: () => { list.splice(i + 1, 0, list.splice(i, 1)[0]); renderLists(); changed(); } }, '↓'),
+        el('button', { class: 'icon del', type: 'button', onclick: () => { if (confirm('Delete this task?')) { list.splice(i, 1); renderLists(); changed(); } } }, 'Delete'),
+      ));
+      row.append(box);
+    }
+    return row;
+  }
+
+  function renderLists() {
+    for (const [who, id, count] of [['eduardo', 'dadList', 'dadCount'], ['paul', 'paulList', 'paulCount']]) {
+      const list = plan.tasks[who];
+      $(id).replaceChildren(...list.map((x, i) => taskRow(who, x, i, list)));
+      $(count).textContent = `${list.filter((x) => x.status === 'done').length} of ${list.length} done`;
+    }
+  }
+
+  function renderLog() {
+    const rows = plan.log.map((x, i) => ({ x, i })).sort((a, b) => b.x.date.localeCompare(a.x.date));
+    $('logList').replaceChildren(...rows.map(({ x, i }) => {
+      const t = bi(x.text);
+      return el('div', { class: 'logrow' },
+        el('span', { class: 'd' }, shortDate(x.date)),
+        el('p', null, t.es, t.en ? el('span', { class: 'en', style: 'display:block' }, t.en) : null),
+        el('button', { class: 'icon del', type: 'button', 'aria-label': 'Delete entry', onclick: () => { if (confirm('Delete this log entry?')) { plan.log.splice(i, 1); renderLog(); changed(); } } }, '✕'),
+      );
+    }));
+  }
+
+  function renderPrices() {
+    $('prices').replaceChildren(...plan.services.map((s) => el('label', { class: 'f' }, bi(s.name).es + ' ($)',
+      el('input', { type: 'number', min: 0, step: 1, inputmode: 'numeric', value: typeof s.price === 'number' ? s.price : '', oninput: (e) => { s.price = e.target.value === '' ? null : Number(e.target.value); changed(); } }))));
+  }
+
+  function renderAll() {
+    renderLists(); renderLog(); renderPrices();
+    $('saved').value = plan.fund.saved;
+    $('target').value = plan.fund.target;
+    $('goalEs').value = bi(plan.goalNow).es;
+    $('goalEn').value = bi(plan.goalNow).en;
+    $('logDate').value = todayIso();
+    changed();
+  }
+
+  // ---------- dirty state and notify default ----------
+  function changed() {
+    const dirty = JSON.stringify(plan) !== JSON.stringify(orig);
+    const before = nextOf(orig.tasks.eduardo), after = nextOf(plan.tasks.eduardo);
+    const ballMoved = !!after && (!before || bi(before.text).es !== bi(after.text).es);
+    if (!notifyTouched) $('notify').checked = dirty && ballMoved;
+    $('save').disabled = !dirty;
+    $('state').textContent = dirty ? (ballMoved ? 'Unsaved · Dad has a new shot' : 'Unsaved changes') : `Saved · version ${rev}`;
+  }
+  $('notify').addEventListener('change', () => { notifyTouched = true; });
+
+  $('saved').addEventListener('input', (e) => { plan.fund.saved = Math.max(0, Number(e.target.value) || 0); changed(); });
+  $('target').addEventListener('input', (e) => { plan.fund.target = Math.max(0, Number(e.target.value) || 0); changed(); });
+  $('goalEs').addEventListener('input', (e) => { plan.goalNow = { ...bi(plan.goalNow), es: e.target.value }; changed(); });
+  $('goalEn').addEventListener('input', (e) => { plan.goalNow = { ...bi(plan.goalNow), en: e.target.value }; changed(); });
+
+  $('inAdd').addEventListener('click', () => {
+    const amt = Math.round(Number($('inAmt').value));
+    if (!(amt > 0)) return;
+    plan.fund.saved += amt;
+    const es = '$' + String(amt).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const en = '$' + String(amt).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    plan.log.push({ date: todayIso(), text: { es: `Entraron ${es} al fondo del pasaje.`, en: `${en} went into the ticket fund.` } });
+    $('saved').value = plan.fund.saved;
+    $('inAmt').value = '';
+    renderLog(); changed();
+  });
+
+  $('logAdd').addEventListener('click', () => {
+    const es = $('logEs').value.trim(), en = $('logEn').value.trim();
+    if (!es && !en) return;
+    plan.log.push({ date: $('logDate').value || todayIso(), text: { es: es || en, en } });
+    $('logEs').value = ''; $('logEn').value = '';
+    renderLog(); changed();
+  });
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-add]');
+    if (!b || !plan) return;
+    const x = { status: 'todo', text: { es: '', en: '' } };
+    plan.tasks[b.dataset.add].push(x);
+    openRows.add(x);
+    renderLists(); changed();
+    const list = $(b.dataset.add === 'eduardo' ? 'dadList' : 'paulList');
+    const ta = list.lastElementChild && list.lastElementChild.querySelector('textarea');
+    if (ta) ta.focus();
+  });
+
+  // ---------- load and save ----------
+  async function load() {
+    const res = await fetch(API + '/api/data', { cache: 'no-store' });
+    let blob;
+    if (res.ok) { const doc = await res.json(); rev = doc.rev; blob = doc.blob; }
+    else if (res.status === 404) { rev = 0; blob = await (await fetch('data.json', { cache: 'no-cache' })).json(); }
+    else throw new Error('load ' + res.status);
+    plan = await decrypt(pin, blob);
+    orig = clone(plan);
+    notifyTouched = false;
+    renderAll();
+  }
+
+  $('save').addEventListener('click', async () => {
+    $('save').disabled = true;
+    $('state').textContent = 'Saving…';
+    try {
+      for (const who of ['eduardo', 'paul']) plan.tasks[who] = plan.tasks[who].filter((x) => bi(x.text).es.trim() || bi(x.text).en.trim());
+      plan.updated = todayIso();
+      const blob = await encrypt(pin, plan);
+      const notify = $('notify').checked;
+      const res = await fetch(API + '/api/data', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ blob, rev, notify }),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (res.status === 401) { store.del(TOKEN_KEY); showGate('The admin token was not accepted.'); return; }
+      if (res.status === 409) {
+        $('state').textContent = 'Someone saved in the meantime. Reload to get the latest (your edits here will be lost).';
+        $('save').disabled = false;
+        return;
+      }
+      if (!res.ok) throw new Error(out.error || res.status);
+      rev = out.rev;
+      orig = clone(plan);
+      notifyTouched = false;
+      renderLists(); changed();
+      $('state').textContent = `Saved · version ${rev}` + (notify ? ` · notified ${out.sent} phone${out.sent === 1 ? '' : 's'}` : '');
+    } catch (err) {
+      $('state').textContent = 'Could not save. Check the connection and try again.';
+      $('save').disabled = false;
+    }
+  });
+
+  $('testPush').addEventListener('click', async () => {
+    $('testMsg').textContent = 'Sending…';
+    try {
+      const res = await fetch(API + '/api/test-push', { method: 'POST', headers: { Authorization: 'Bearer ' + token } });
+      const out = await res.json();
+      $('testMsg').textContent = res.ok ? `Sent to ${out.sent} of ${out.phones} phone${out.phones === 1 ? '' : 's'}.` : 'Not accepted: ' + out.error;
+    } catch { $('testMsg').textContent = 'Could not reach the Worker.'; }
+  });
+
+  window.addEventListener('beforeunload', (e) => { if (plan && JSON.stringify(plan) !== JSON.stringify(orig)) { e.preventDefault(); e.returnValue = ''; } });
+
+  // ---------- sign in ----------
+  function showGate(msg) {
+    $('app').hidden = true;
+    $('gate').hidden = false;
+    $('gateMsg').textContent = msg || '';
+    $('pin').value = store.get(PIN_KEY) || '';
+    $('token').value = store.get(TOKEN_KEY) || '';
+  }
+
+  async function open() {
+    try { await load(); }
+    catch (err) {
+      showGate(err && err.name === 'OperationError' ? 'Wrong PIN.' : 'Could not load the plan. Check the connection.');
+      return false;
+    }
+    $('gate').hidden = true;
+    $('app').hidden = false;
+    return true;
+  }
+
+  $('gate').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    pin = $('pin').value.trim();
+    token = $('token').value.trim();
+    if (!pin || !token) { $('gateMsg').textContent = 'Both are needed.'; return; }
+    $('enter').disabled = true;
+    if (await open()) { store.set(PIN_KEY, pin); store.set(TOKEN_KEY, token); }
+    $('enter').disabled = false;
+  });
+
+  pin = store.get(PIN_KEY) || '';
+  token = store.get(TOKEN_KEY) || '';
+  if (pin && token) open(); else showGate();
+})();
+</script>
+</body>
+</html>

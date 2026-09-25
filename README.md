@@ -1,6 +1,6 @@
 # Plan de regreso
 
-A one-page, read-only status app for Eduardo: what we are working on together, the plan, and how it is going. Spanish, mobile first, no framework, no build step for the page itself.
+A one-page, read-only status app for Eduardo: what we are working on together, the plan, and how it is going. Spanish and English (ES | EN switch, remembered per device; Spanish phones open in Spanish), mobile first, no framework, no build step for the page itself.
 
 Live: https://mellowt1.github.io/plan-regreso/
 
@@ -11,9 +11,18 @@ Live: https://mellowt1.github.io/plan-regreso/
 - `content/plan.json` is the plaintext source. It is gitignored. Keep a copy outside the repo as well.
 - `sw.js` caches the shell and the last `data.json` so the page opens on patchy internet.
 
-## Updating the content (about 2 minutes)
+## Live data, editing and notifications (since 2026-09-25)
 
-1. Edit `content/plan.json` (tasks, log entry, fund saved, phases).
+- The plan now lives on a Cloudflare Worker, `plan-regreso.paul-o-a04.workers.dev` (code in `worker/`, config in `wrangler.toml`, KV namespace PLAN_REGRESO). It stores only the ciphertext. `data.json` stays as the fallback.
+- **Editing:** open `/admin.html` on your phone, sign in with the PIN and the admin token. Tick tasks, reorder, add log entries, add money to the fund, set prices, then Save. "Notify Dad" is ticked by itself when his next task changes.
+- **Notifications:** Dad taps "Sí, avísame" on his page. On iPhone he first adds the page to the Home Screen. The push says only "la pelota está de tu lado"; nothing from the plan goes through the push service.
+- **Secrets:** `ADMIN_TOKEN`, `SUB_KEY` and the VAPID keys are Worker secrets, with a copy in `plan-regreso-secrets.txt` outside the repo. `SUB_KEY` is also inside the encrypted plan (`push.key`), so only someone with the PIN can sign a phone up.
+- **From the terminal:** `node sync.mjs pull` gets the latest edits into `content/plan.json`; `node sync.mjs push [--notify]` sends it back. Both need `PLAN_PIN`; push also needs `PLAN_ADMIN`. Pull before editing plan.json by hand.
+- **Deploying the Worker:** `npx wrangler deploy` in this folder.
+
+## Updating the content (old way, still works for data.json)
+
+1. Edit `content/plan.json` (tasks, log entry, fund saved, phases). Every text is `{ "es": "...", "en": "..." }`; write both. A plain string still works and shows in both languages.
 2. Set `updated` to today.
 3. Run the build with the PIN:
 

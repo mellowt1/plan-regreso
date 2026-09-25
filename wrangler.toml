@@ -1,0 +1,8 @@
+name = "plan-regreso"
+main = "worker/src/worker.js"
+compatibility_date = "2026-09-01"
+
+# One KV namespace, PLAN_REGRESO in the dashboard: the encrypted plan and the push subscriptions.
+[[kv_namespaces]]
+binding = "PLAN_KV"
+id = "eab5fb8d1c7d4b2494a02c56633f8afd"
