@@ -129,7 +129,7 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 body.in { background: var(--a-bg); }
 @media (min-width: 1024px) {
   #phone { display: none; }
-  #desk { display: flex; }
+  #desk { display: grid; }
   body.in { background: var(--e-bg); }
 }
 body.in .tail { color: var(--a-ink); }
@@ -207,14 +207,68 @@ body.in .tail { color: var(--a-ink); }
 .a-wa { align-self: flex-start; font-size: 14px; color: var(--a-muted); min-height: 40px; display: inline-flex; align-items: center; }
 .dadtag { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 4px; background: var(--a-next); color: var(--a-orange); letter-spacing: 0; }
 
-/* E: Escritorio */
-.E { font-family: "Figtree", system-ui, sans-serif; color: var(--e-ink); background: var(--e-bg); max-width: 1360px; margin: 0 auto; padding: 28px 40px 0; display: flex; flex-direction: column; gap: 18px; }
+/* E: Escritorio, an app shell: royal-blue sidebar, one section at a time */
+:root { --e-side: #1F4FD8; --e-side-ink: #FFFFFF; --e-side-soft: rgba(255,255,255,.74); --e-side-hover: rgba(255,255,255,.10); --e-side-on: #FFFFFF; --e-side-on-ink: #1F4FD8; --e-hero: #1F4FD8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --e-side: #111A38; --e-side-soft: rgba(232,236,245,.72); --e-side-hover: rgba(255,255,255,.07); --e-side-on: #243A86; --e-side-on-ink: #FFFFFF; --e-hero: #16224A; } }
+:root[data-theme="dark"] { --e-side: #111A38; --e-side-soft: rgba(232,236,245,.72); --e-side-hover: rgba(255,255,255,.07); --e-side-on: #243A86; --e-side-on-ink: #FFFFFF; --e-hero: #16224A; }
+.E { font-family: "Figtree", system-ui, sans-serif; color: var(--e-ink); background: var(--e-bg); grid-template-columns: 264px minmax(0, 1fr); min-height: 100vh; }
 .E .serif { font-family: "Fraunces", Georgia, serif; font-weight: 700; }
-.e-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.e-top .l { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-.e-top h1 { font-size: 30px; line-height: 1.1; }
-.e-top .upd { font-size: 15px; color: var(--e-muted); }
-.e-top .r { display: flex; gap: 10px; align-items: center; }
+.e-side { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--e-side); color: var(--e-side-ink); padding: 26px 16px 20px; display: flex; flex-direction: column; gap: 22px; }
+.e-brand { font-size: 23px; line-height: 1.1; padding: 0 10px; display: flex; align-items: center; gap: 10px; }
+.e-brand .dot { flex: none; width: 30px; height: 30px; border-radius: 9px; background: #FFFFFF; color: #1F4FD8; display: grid; place-items: center; font-family: "Figtree", sans-serif; font-size: 15px; font-weight: 800; }
+.e-nav { display: flex; flex-direction: column; gap: 4px; }
+.e-nav button { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 12px; border: 0; border-radius: 10px; background: none; color: var(--e-side-soft); font: 600 16px "Figtree", sans-serif; cursor: pointer; text-align: left; }
+.e-nav button:hover { background: var(--e-side-hover); color: var(--e-side-ink); }
+.e-nav button[aria-current="page"] { background: var(--e-side-on); color: var(--e-side-on-ink); }
+.e-nav svg { flex: none; width: 20px; height: 20px; }
+.e-nav .badge { margin-left: auto; min-width: 24px; height: 22px; padding: 0 7px; border-radius: 999px; background: rgba(255,255,255,.2); color: inherit; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.e-nav button[aria-current="page"] .badge { background: rgba(31,79,216,.14); }
+.e-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.e-side-foot .e-btn { justify-content: center; background: #FFFFFF; color: #1F4FD8; }
+.e-side-foot .e-btn.ghost { background: transparent; color: var(--e-side-ink); border: 1px solid rgba(255,255,255,.32); }
+.e-side-foot .links { display: flex; flex-direction: column; padding: 4px 4px 0; }
+.e-side-foot .links button { background: none; border: 0; color: var(--e-side-soft); font: 500 14px "Figtree", sans-serif; text-align: left; padding: 7px 8px; cursor: pointer; border-radius: 8px; }
+.e-side-foot .links button:hover { color: var(--e-side-ink); background: var(--e-side-hover); }
+.e-side-foot .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 8px 0; font-size: 13px; color: var(--e-side-soft); }
+.E .e-side .seg { background: rgba(255,255,255,.14); }
+.E .e-side .seg button { color: #FFFFFF; }
+.E .e-side .seg button[aria-pressed="true"] { background: #FFFFFF; color: #1F4FD8; }
+.e-stat.duo { gap: 12px; }
+.e-stat .who { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 2px 10px; }
+.e-stat .who .num { font-size: 24px; line-height: 1.1; justify-self: end; }
+.e-stat .who .e-track { grid-column: 1 / -1; }
+.e-main { min-width: 0; display: flex; flex-direction: column; }
+.e-hero { background: var(--e-hero); color: #FFFFFF; padding: 30px 40px 32px; display: flex; flex-direction: column; gap: 22px; }
+.e-hero .date { font-size: 15px; color: rgba(255,255,255,.78); }
+.e-hero h1 { font-size: 40px; line-height: 1.05; letter-spacing: -.01em; }
+.e-hero .subt { font-size: 17px; color: rgba(255,255,255,.85); }
+.e-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr)); gap: 14px; }
+.e-stat { background: rgba(255,255,255,.12); border-radius: 14px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.e-stat .k { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.8); }
+.e-stat .big { font-size: 34px; line-height: 1.05; }
+.e-stat .big small { font-family: "Figtree", sans-serif; font-size: 15px; font-weight: 500; color: rgba(255,255,255,.8); }
+.e-stat .s { font-size: 14px; color: rgba(255,255,255,.8); }
+.e-stat .e-bar { background: rgba(255,255,255,.22); }
+.e-stat .e-bar i { background: #FFFFFF; }
+.e-stat .e-track span { background: rgba(255,255,255,.22); }
+.e-stat .e-track .done { background: #6EE7A0; }
+.e-stat .e-track .doing { background: #FFFFFF; }
+.e-stat .e-track .blocked { background: #FFC285; }
+.e-next { background: #FFFFFF; color: #111827; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+.e-next .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1F4FD8; }
+.e-next .t { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 20px; line-height: 1.25; }
+.e-next .e-btn { align-self: flex-start; background: #1F4FD8; color: #FFFFFF; }
+.e-body { padding: 26px 40px 8px; display: grid; gap: 18px; align-content: start; }
+.e-body.two { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.e-body.three { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.e-body .wide { grid-column: 1 / -1; }
+.e-tile { border: 1px solid var(--e-line); }
+.e-goal { display: flex; gap: 12px; align-items: center; padding: 9px 0; border-top: 1px solid var(--e-line); font-weight: 600; font-size: 16px; }
+.e-goal .n { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--e-teal-bg); color: var(--e-teal); font-size: 13px; font-weight: 700; }
+.e-bigmoney { font-size: 30px; line-height: 1.1; margin-bottom: 6px; }
+.e-fund { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: end; }
+.e-fund .e-bar { grid-column: 1 / -1; height: 12px; }
+.e-fund p { grid-column: 1 / -1; }
 .e-btn { min-height: 44px; padding: 0 18px; border: 0; border-radius: 12px; background: var(--e-teal); color: #fff; font: 600 15px "Figtree", sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
 .e-btn svg { width: 18px; height: 18px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .e-btn:not(.ghost) { color: #0C1120; } }
@@ -279,7 +333,7 @@ details.more summary::after { content: "+"; font-size: 24px; color: var(--muted)
 details.more[open] summary::after { content: "2"; }
 details.more .row { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 8px; }
 .tail { padding: 0 16px; }
-@media (min-width: 1024px) { .tail { max-width: 1360px; margin: 0 auto; padding: 0 40px; } }
+@media (min-width: 1024px) { .tail { margin-left: 264px; padding: 0 40px; } .tail details.more { display: none; } }
 
 /* Push nudge */
 .nudge { margin-top: 24px; display: flex; align-items: center; gap: 18px; padding: 18px 22px; border-radius: 12px; background: var(--surface); border: 2px dashed var(--line); }
@@ -410,17 +464,15 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   </div>
 
   <div id="desk" class="E">
-    <header class="e-top">
-      <div class="l"><h1 class="serif" data-t="brand">Plan de regreso</h1><span class="upd" id="eUpd"></span></div>
-      <div class="r" id="eActs"></div>
-    </header>
-    <div class="e-goals" id="eGoals"></div>
-    <section class="e-kpis" id="eKpis"></section>
-    <section class="e-cols">
-      <div class="e-tile" id="eDad"></div>
-      <div class="e-tile" id="ePaul"></div>
-      <div class="e-stack" id="eSide"></div>
-    </section>
+    <aside class="e-side" aria-label="Menú">
+      <div class="e-brand serif"><span class="dot" aria-hidden="true">P</span><span data-t="brand">Plan de regreso</span></div>
+      <nav class="e-nav" id="eNav"></nav>
+      <div class="e-side-foot" id="eSideFoot"></div>
+    </aside>
+    <div class="e-main">
+      <header class="e-hero" id="eHero"></header>
+      <div class="e-body" id="eBody"></div>
+    </div>
   </div>
 
   <div class="tail">
@@ -507,6 +559,10 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       pill: { doing: 'EN CURSO', todo: 'PENDIENTE', blocked: 'ESPERA', done: 'HECHO' },
       word: { doing: 'En curso', todo: '', blocked: 'Espera', done: 'Hecha' },
       aSub: (u, days, dl) => `${u} · faltan ${days} días (${dl})`, left: 'Faltan', daysN: (n) => n + ' días', until: (d) => 'hasta el ' + d,
+      navHome: 'Resumen', navNotes: 'Notas y novedades', nextTasks: 'Tus próximas tareas', paulNowT: 'Paul ahora',
+      seeTasks: 'Ver todas las tareas', seeMoney: 'Ver los gastos', seeNews: 'Ver todo',
+      subTasks: (a, b, c, e) => `Papá ${a} de ${b} · Paul ${c} de ${e}`, subMoney: (t) => 'Total necesario ' + t,
+      subCredit: (a, b) => `${a} pasos · ${b} deudas`, subNotes: (n) => n === 1 ? '1 novedad' : n + ' novedades',
       tapMark: 'toca para marcar', seeDetail: 'Ver detalle', fullNote: 'Notas de papá', rebuild: 'Reconstruir el crédito',
       fundT: 'Fondo del pasaje', seeAll: 'Ver todo', noNotes: 'Todavía no hay notas.', moreT: 'Más del plan',
       nudgeT: '¿Te aviso cuando te toque?', nudgeP: 'Un aviso en tu teléfono cuando Paul te devuelva la pelota.',
@@ -554,6 +610,10 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
       pill: { doing: 'DOING', todo: 'TO DO', blocked: 'WAITING', done: 'DONE' },
       word: { doing: 'Doing', todo: '', blocked: 'Waiting', done: 'Done' },
       aSub: (u, days, dl) => `${u} · ${days} days to go (${dl})`, left: 'To go', daysN: (n) => n + ' days', until: (d) => 'until ' + d,
+      navHome: 'Overview', navNotes: 'Notes and updates', nextTasks: 'Your next tasks', paulNowT: 'Paul right now',
+      seeTasks: 'See all tasks', seeMoney: 'See the costs', seeNews: 'See all',
+      subTasks: (a, b, c, e) => `Dad ${a} of ${b} · Paul ${c} of ${e}`, subMoney: (t) => 'Total needed ' + t,
+      subCredit: (a, b) => `${a} steps · ${b} debts`, subNotes: (n) => n === 1 ? '1 update' : n + ' updates',
       tapMark: 'tap to tick', seeDetail: 'See details', fullNote: 'Dad’s notes', rebuild: 'Rebuild credit',
       fundT: 'Ticket fund', seeAll: 'See all', noNotes: 'No notes yet.', moreT: 'More of the plan',
       nudgeT: 'Want a nudge when it is your turn?', nudgeP: 'A notification on your phone when Paul sends the ball back.',
@@ -659,6 +719,18 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
   const nextOf = (list) => list.find((x) => x.status === 'doing') || list.find((x) => x.status === 'todo');
 
   // ---------- render ----------
+  const VIEW_KEY = 'plan-regreso-view';
+  const VIEWS = ['resumen', 'tareas', 'dinero', 'credito', 'notas'];
+  let deskView = (() => { const v = store.get(VIEW_KEY); return VIEWS.includes(v) ? v : 'resumen'; })();
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-view]');
+    if (!b || !data) return;
+    deskView = b.dataset.view;
+    store.set(deskView, VIEW_KEY);
+    render(data);
+    window.scrollTo(0, 0);
+  });
+
   // The same plan drawn twice: A "La hoja" for phones (the sheet, cleaned up) and
   // E "Escritorio" for a computer (everything on one screen). CSS shows one.
   const doneLast = (list) => [...list.filter((x) => x.status !== 'done'), ...list.filter((x) => x.status === 'done')];
@@ -749,50 +821,101 @@ li.done button.box { background: var(--done); border-color: var(--done); color: 
         el('div', { class: 'a-actions' }, writeBtn('a-btn'), wa ? el('a', { class: 'a-wa', href: wa, target: '_blank', rel: 'noopener' }, S('waPaul')) : null)),
     );
 
-    // ----- E: Escritorio -----
-    $('eUpd').textContent = upd;
-    $('eActs').replaceChildren(...[
+    // ----- E: Escritorio, one section at a time -----
+    const view = deskView;
+    const I = {
+      resumen: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+      tareas: '<rect x="3.5" y="3.5" width="17" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.7 2.6L16.5 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+      dinero: '<rect x="2.5" y="6" width="19" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>',
+      credito: '<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 10h19M6.5 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      notas: '<path d="M5 3.5h10l4 4v13H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 11h7M8.5 15h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    };
+    const openMine = mine.filter((x) => x.status !== 'done').length;
+    const nav = [['resumen', S('navHome')], ['tareas', S('secTasks'), openMine], ['dinero', S('secMoney')], ['credito', S('secCredit')], ['notas', S('navNotes')]];
+    $('eNav').replaceChildren(...nav.map(([k, label, badge]) => el('button', { type: 'button', 'data-view': k, 'aria-current': k === view ? 'page' : null },
+      svg(I[k], '0 0 24 24'), el('span', null, label), badge ? el('span', { class: 'badge' }, badge) : null)));
+    $('eSideFoot').replaceChildren(...[
       writeBtn('e-btn'),
       wa ? el('a', { class: 'e-btn ghost', href: wa, target: '_blank', rel: 'noopener' }, chat(), 'WhatsApp') : null,
-      el('div', { class: 'seg', role: 'group', 'aria-label': 'Idioma / Language' },
-        ['es', 'en'].map((l) => el('button', { type: 'button', 'data-lang': l, lang: l, 'aria-pressed': String(l === lang) }, l.toUpperCase()))),
+      el('div', { class: 'links' },
+        el('button', { type: 'button', 'data-sheet': 'plan' }, S('lPlan')),
+        el('button', { type: 'button', 'data-sheet': 'more' }, S('lMore'))),
+      el('div', { class: 'row' }, el('span', null, upd),
+        el('div', { class: 'seg', role: 'group', 'aria-label': 'Idioma / Language' },
+          ['es', 'en'].map((l) => el('button', { type: 'button', 'data-lang': l, lang: l, 'aria-pressed': String(l === lang) }, l.toUpperCase())))),
     ].filter(Boolean));
-    $('eGoals').replaceChildren(el('span', null, S('goals') + ':'), ...(d.objectives || []).map((g, i) => el('span', null, el('span', { class: 'n' }, i + 1), el('b', null, tr(g)))));
+
     const track = (list) => el('div', { class: 'e-track', 'aria-hidden': 'true' }, list.map((x) => el('span', { class: x.status })));
-    $('eKpis').replaceChildren(
-      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('left')), el('span', { class: 'big serif' }, S('daysN')(days)), el('span', { class: 's' }, S('until')(fmtDay(d.deadline, { day: 'numeric', month: 'long' })))),
-      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('fundT')), el('span', { class: 'big serif' }, money(f.saved), ' ', el('small', null, S('of') + money(f.target))), bar('e-bar')),
-      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, S('dadShort')), el('span', { class: 'big serif' }, S('doneOf')(doneOf(mine), mine.length).replace(/ (hechas|done)$/, '')), track(mine)),
-      el('div', { class: 'e-tile' }, el('span', { class: 'k' }, 'Paul'), el('span', { class: 'big serif' }, S('doneOf')(doneOf(pauls), pauls.length).replace(/ (hechas|done)$/, '')), track(pauls)),
-    );
-    $('eDad').replaceChildren(
-      el('h2', null, S('todoDad'), edit ? el('small', null, S('tapMark')) : null),
+    const frac = (l) => S('doneOf')(doneOf(l), l.length).replace(/ (hechas|done)$/, '');
+    const todayTxt = cap(t.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', ''));
+    const heroTitle = { resumen: S('hi'), tareas: S('secTasks'), dinero: S('secMoney'), credito: S('secCredit'), notas: S('navNotes') }[view];
+    const heroSub = {
+      tareas: S('subTasks')(doneOf(mine), mine.length, doneOf(pauls), pauls.length),
+      dinero: groups.length ? S('subMoney')(money(groups[groups.length - 1].total)) : '',
+      credito: S('subCredit')((credit.steps || []).length, (credit.debts || []).length),
+      notas: S('subNotes')(logs.length),
+    }[view];
+    $('eHero').replaceChildren(...[
+      el('span', { class: 'date' }, todayTxt),
+      el('h1', { class: 'serif' }, heroTitle),
+      view !== 'resumen' && heroSub ? el('p', { class: 'subt' }, heroSub) : null,
+      view === 'resumen' ? el('div', { class: 'e-hero-grid' },
+        el('div', { class: 'e-next' },
+          el('span', { class: 'k' }, S('nextStep')),
+          el('span', { class: 't' }, next ? tr(next.text) : S('allDone')),
+          next && edit ? el('button', { class: 'e-btn', type: 'button', 'data-done': taskKey(next), 'data-kind': 'task' }, check(), S('markDone')) : null),
+        el('div', { class: 'e-stat' }, el('span', { class: 'k' }, S('left')), el('span', { class: 'big serif' }, S('daysN')(days)), el('span', { class: 's' }, S('until')(fmtDay(d.deadline, { day: 'numeric', month: 'long' })))),
+        el('div', { class: 'e-stat' }, el('span', { class: 'k' }, S('fundT')), el('span', { class: 'big serif' }, money(f.saved), ' ', el('small', null, S('of') + money(f.target))), bar('e-bar')),
+        el('div', { class: 'e-stat duo' }, ...[[S('dadShort'), mine], ['Paul', pauls]].map(([who, l]) => el('div', { class: 'who' }, el('span', { class: 'k' }, who), el('span', { class: 'num serif' }, frac(l)), track(l)))),
+      ) : null,
+    ].filter(Boolean));
+
+    const tile = (title, right, ...kids) => el('div', { class: 'e-tile' }, el('h2', null, title, right || null), ...kids);
+    const goTo = (k, label) => el('button', { class: 'e-link', type: 'button', 'data-view': k }, label);
+    const dadList = () => [
       ...doneLast(mine).map((x) => el('label', { class: 'e-task ' + x.status + (x === next ? ' next' : '') + (edit ? '' : ' static') },
         tick(x, 'task', edit), el('span', null, tr(x.text), flags(x, next, 'flag')))),
-      edit ? addForm('e-add') : null,
-    );
+      edit ? addForm('e-add') : null];
     const wordColor = { doing: 'var(--e-teal)', blocked: 'var(--e-amber)', done: 'var(--e-done)', todo: 'var(--e-muted)' };
-    $('ePaul').replaceChildren(
-      el('h2', null, S('todoPaul')),
-      ...doneLast(pauls).map((x) => { const w = el('span', { class: 'w' }, S('word')[x.status] || ''); w.style.color = wordColor[x.status] || ''; return el('div', { class: 'e-prow ' + x.status }, stateIcon(x.status), el('span', { class: 't' }, tr(x.text)), w); }),
-    );
-    $('eSide').replaceChildren(
-      el('div', { class: 'e-tile' },
-        el('h2', null, S('tabGastos')),
-        ...groups.map((g, gi) => gi === groups.length - 1
-          ? [...g.items.map(([label, n]) => el('div', { class: 'e-mrow' }, el('span', null, tr(label)), el('b', null, money(n)))),
-             el('div', { class: 'e-mrow total' }, el('span', null, S('total')), el('b', null, money(g.total)))]
-          : el('div', { class: 'e-mrow' }, el('span', null, tr(g.title)), el('b', null, money(g.total)))).flat(),
-        groups.length ? el('button', { class: 'e-link', type: 'button', 'data-sheet': 'money' }, S('seeDetail')) : null),
-      el('div', { class: 'e-tile e-credit' },
-        el('h2', null, S('secCredit')),
-        ...(credit.steps || []).map((x) => el('label', { class: x.status }, tick(x, 'credit', edit), el('span', null, tr(x.text)))),
-        (credit.debts || []).length ? el('p', { class: 'muted' }, S('debts') + ': ' + credit.debts.map(tr).join(', ')) : null),
-      notes.length ? el('div', { class: 'e-tile' }, el('h2', null, S('fullNote')), ...notes.map((n) => el('p', { class: 'e-note' }, tr(n.text)))) : null,
-      el('div', { class: 'e-tile e-news' },
-        el('h2', null, S('secLog'), logs.length > 3 ? el('button', { class: 'e-link', type: 'button', 'data-sheet': 'log' }, S('seeAll') + ' (' + logs.length + ')') : null),
-        ...logs.slice(0, 3).map((x) => el('div', null, el('span', { class: 'd' + (x.by === 'eduardo' ? '' : ' paul') }, (x.by === 'eduardo' ? S('byDad') : 'Paul') + ' · ' + shortDay(x.date)), el('br'), tr(x.text)))),
-    );
+    const paulRow = (x) => { const w = el('span', { class: 'w' }, S('word')[x.status] || ''); w.style.color = wordColor[x.status] || ''; return el('div', { class: 'e-prow ' + x.status }, stateIcon(x.status), el('span', { class: 't' }, tr(x.text)), w); };
+    const newsRows = (list) => list.map((x) => el('div', null, el('span', { class: 'd' + (x.by === 'eduardo' ? '' : ' paul') }, (x.by === 'eduardo' ? S('byDad') : 'Paul') + ' · ' + shortDay(x.date)), el('br'), tr(x.text)));
+    const moneyRows = (g) => [...g.items.map(([label, n]) => el('div', { class: 'e-mrow' }, el('span', null, tr(label)), el('b', null, money(n)))),
+      g.total != null ? el('div', { class: 'e-mrow total' }, el('span', null, S('total')), el('b', null, money(g.total))) : null];
+    const creditTile = () => el('div', { class: 'e-tile e-credit' }, el('h2', null, S('rebuild')), ...(credit.steps || []).map((x) => el('label', { class: x.status }, tick(x, 'credit', edit), el('span', null, tr(x.text)))));
+    let body = [], cls = 'e-body';
+    if (view === 'resumen') {
+      cls += ' three';
+      const openList = doneLast(mine).filter((x) => x.status !== 'done');
+      body = [
+        tile(S('goals'), null, ...(d.objectives || []).map((g, i) => el('div', { class: 'e-goal' }, el('span', { class: 'n' }, i + 1), tr(g)))),
+        tile(S('nextTasks'), goTo('tareas', S('seeTasks')), ...openList.slice(0, 4).map((x) => el('label', { class: 'e-task ' + x.status + (x === next ? ' next' : '') + (edit ? '' : ' static') }, tick(x, 'task', edit), el('span', null, tr(x.text))))),
+        tile(S('paulNowT'), null, ...doneLast(pauls).filter((x) => x.status !== 'done').slice(0, 4).map(paulRow)),
+        groups.length ? tile(S('tabGastos'), goTo('dinero', S('seeMoney')), ...groups.slice(0, -1).map((g) => el('div', { class: 'e-mrow' }, el('span', null, tr(g.title)), el('b', null, money(g.total)))),
+          el('div', { class: 'e-mrow total' }, el('span', null, S('total')), el('b', null, money(groups[groups.length - 1].total)))) : null,
+        el('div', { class: 'e-tile e-news', style: 'grid-column: span 2' }, el('h2', null, S('secLog'), goTo('notas', S('seeNews') + ' (' + logs.length + ')')), ...newsRows(logs.slice(0, 3))),
+      ];
+    } else if (view === 'tareas') {
+      cls += ' two';
+      body = [tile(S('todoDad'), edit ? el('small', null, S('tapMark')) : null, ...dadList()), tile(S('todoPaul'), null, ...doneLast(pauls).map(paulRow))];
+    } else if (view === 'dinero') {
+      cls += ' three';
+      body = [
+        el('div', { class: 'e-tile wide' }, el('h2', null, S('fundT')), el('div', { class: 'e-fund' },
+          el('span', { class: 'e-bigmoney serif' }, money(f.saved)), el('span', { class: 'muted' }, S('of') + money(f.target)), bar('e-bar'), f.note ? el('p', { class: 'muted' }, tr(f.note)) : null)),
+        ...groups.map((g) => tile(tr(g.title), null, ...moneyRows(g))),
+      ];
+    } else if (view === 'credito') {
+      cls += ' two';
+      body = [creditTile(), tile(S('debts'), null, ...(credit.debts || []).map((x) => el('div', { class: 'e-goal' }, tr(x))))];
+    } else {
+      cls += ' two';
+      body = [
+        el('div', { class: 'e-tile e-news' }, el('h2', null, S('secLog'), writeBtn('e-btn')), ...newsRows(logs)),
+        tile(S('fullNote'), null, ...(notes.length ? notes.map((n) => el('p', { class: 'e-note' }, tr(n.text))) : [el('p', { class: 'muted' }, S('noNotes'))])),
+      ];
+    }
+    $('eBody').className = cls;
+    $('eBody').replaceChildren(...body.filter(Boolean));
 
     document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     if (sheetKind && sheetKind !== 'write' && $('sheet').open) fillSheet(sheetKind);
