@@ -1,6 +1,6 @@
 # Plan de regreso
 
-A one-page status app for Eduardo and Paul: what we are working on together, the plan, and how it is going. Spanish and English (ES | EN switch, remembered per device; Spanish phones open in Spanish), mobile first, no framework, no build step for the page itself.
+A one-page status app for Eduardo and Paul: what we are working on together, the plan, and how it is going. Dad ticks his tasks and writes updates from his page, Paul edits the rest, and each side gets a push notification when the other saves. Spanish and English (ES | EN switch, remembered per device; Spanish phones open in Spanish), mobile first, no framework, no build step for the page itself.
 
 Live: https://mellowt1.github.io/plan-regreso/
 

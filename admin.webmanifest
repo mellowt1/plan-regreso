@@ -1,6 +1,7 @@
 {
   "name": "Plan de regreso · edit",
   "short_name": "Plan edit",
+  "description": "Edit the plan: tasks, updates, the fund and prices, and notify Dad.",
   "lang": "en",
   "start_url": "./admin.html",
   "scope": "./",
